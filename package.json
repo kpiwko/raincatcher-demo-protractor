@@ -1,0 +1,40 @@
+{
+  "name": "raincatcher-workorder-ui",
+  "version": "0.0.1",
+  "description": "UI tests for workorders module",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "eslint": "./node_modules/.bin/eslint '**/*.js'",
+    "setup": "./node_modules/.bin/webdriver-manager update",
+    "test": "./node_modules/.bin/protractor conf.local.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "some git repo"
+  },
+  "keywords": [
+    "ui",
+    "workorder",
+    "raincatcher"
+  ],
+  "author": "Vitalii Chepeliuk",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "eslint": "^3.16.1",
+    "mocha": "^2.5.3",
+    "protractor": "^4.0.14"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-eslint": "^19.0.0",
+    "grunt-protractor-runner": "^4.0.0",
+    "grunt-shell": "^2.1.0"
+  }
+}
