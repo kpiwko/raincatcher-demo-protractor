@@ -16,7 +16,7 @@ exports.config = {
   mochaOpts: {
     ui: 'bdd',
     reporter: 'spec',
-    timeout: 5000,
+    timeout: 30000,
     bail: true,
     watch: true
   }

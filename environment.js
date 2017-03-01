@@ -11,9 +11,16 @@ module.exports = {
     'browserName':
     (process.env.TEST_BROWSER_NAME || 'chrome'),
     'version':
-    (process.env.TEST_BROWSER_VERSION || 'ANY')
+    (process.env.TEST_BROWSER_VERSION || 'ANY'),
+    'chromeOptions': {
+      args: [
+        'no-sandbox',
+        'user-data-dir=/tmp/chrome',
+        'no-default-browser-check',
+        'unlimited-storage'
+      ]
+    }
   },
-
   // Default http port to host the web server
   webServerDefaultPort: webServerDefaultPort,
 

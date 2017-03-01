@@ -9,15 +9,13 @@ module.exports = function(grunt) {
       options: {
         configFile: '.eslintrc',
       },
-      all: ['tests/**/*.js', ]
+      all: ['Gruntfile.js', 'tests/**/*.js', 'pages/**/*.js', 'utils/**/*.js']
     },
     protractor: {
       options: {
         configFile: 'conf.local.js',
-        // Stops Grunt process if a test fails
-        keepAlive: false,
-        // Do you want the output to use fun colors?
-        noColor: true,
+        keepAlive: false, // Stops Grunt process if a test fails
+        noColor: true, // Do you want the output to use fun colors?
         //debug: true, // Protractor command line debugging tool
         args: {} // Additional arguments that are passed to the webdriver command
       },
@@ -39,7 +37,7 @@ module.exports = function(grunt) {
         command: 'webdriver-manager update',
         options: {
           execOptions: {
-            cwd: 'node_modules/.bin/'
+            cwd: 'node_modules/.bin'
           }
         }
       }
@@ -80,11 +78,12 @@ module.exports = function(grunt) {
   grunt.task.registerTask('config', function(target) {
     var done = this.async();
     target = target || "local";
+    var configFile = 'conf.' + target + '.js';
 
-    if (!fs.existsSync('conf.' + target + '.js')) {
-      grunt.log.error('Specified configuration file ' + 'conf.' + target + '.js' + ' does not exist');
+    if (!fs.existsSync(configFile)) {
+      grunt.log.error('Specified configuration file ' + configFile + ' does not exist');
       done(false);
     }
-    done();
+    done(true);
   });
 };
