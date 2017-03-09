@@ -9,10 +9,10 @@ var LoginPage = function() {
   var selectors = {
     username: 'form[name="loginForm"] input#username',
     password: 'form[name="loginForm"] #password',
-    loginButton: 'button[aria-label="Log in"]',
+    loginButton: 'form[name="loginForm"] button[aria-label="Log in"]',
     loginErrorMessage: 'div[ng-message=error]',
-    logoutSideButton: 'md-sidenav button[aria-label$="Logout"]',
-    logoutButton: 'form[name="loginForm"] button[aria-label="Log in"]'
+    logoutSideButton: 'md-sidenav>md-list button[aria-label$="Logout"]',
+    logoutButton: 'md-content button[aria-label="Log out"]'
   };
 
   var commands = {
