@@ -1,3 +1,4 @@
+var consts = require('../../utils/constants');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -18,7 +19,11 @@ var CreateWorkflowPage = function() {
 
   var commands = {
     navigate: function() {
-      return browser.get('#/workflows/list/workflows/');
+      return browser.get(consts.HASH + consts.workflows.URL_NEW);
+    },
+    selfCheck: function() {
+      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workflows.URL_NEW);
+      expect($(selectors.workflowForm.self).isPresent()).eventually.to.be.true;
     },
     fillInTheFields: function(params) {
       expect($(selectors.workflowForm.self).isPresent()).eventually.to.be.true;

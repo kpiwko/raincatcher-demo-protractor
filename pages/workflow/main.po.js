@@ -1,3 +1,4 @@
+var consts = require('../../utils/constants');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -32,12 +33,13 @@ var MainWorkflowPage = function() {
   };
   var commands = {
     navigate: function() {
-      return browser.get('#/workflows/list');
+      return browser.get(consts.HASH + consts.workflows.URL);
     },
     sideClick: function() {
       $(selectors.sideMenuButton).click();
     },
     selfCheck: function() {
+      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workflows.URL);
       expect(element(by.xpath(selectors.header)).isPresent()).eventually.to.be.true;
       expect($(selectors.newButton).isPresent()).eventually.to.be.true;
       expect($(selectors.searchField).isPresent()).eventually.to.be.true;

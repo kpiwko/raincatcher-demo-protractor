@@ -80,7 +80,7 @@ describe('Workorder E2E', function() {
     });
   });
 
-  describe('UPDDATE', function() {
+  describe('UPDATE', function() {
     it('update test workorder details', function() {
       workordersCrudl.update(data.params.WORKORDER_TUPDATE1, data.workorders.UPDATE2);
     });

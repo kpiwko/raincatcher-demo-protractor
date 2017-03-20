@@ -13,6 +13,7 @@ module.exports.create = function(params, dummyParams) {
   mwp.commands.sideClick();
   utils.waitPresent(mwp.selectors.newButton);
   $(mwp.selectors.newButton).click();
+  cwp.commands.selfCheck();
   if (!_dummyParams) {
     selectDropdowns(params);
     cwp.commands.fillInTheFields(params);
@@ -27,6 +28,7 @@ module.exports.update = function(title, params) {
   open(title);
   expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
   $(mwp.selectors.editButton).click();
+  // cwp.commands.selfCheck(); TOOD need ID of workorder /workorders/list/workorder/ryA2nIaie/edit
   selectDropdowns(params);
   cwp.commands.clearValues();
   cwp.commands.fillInTheFields(params);

@@ -1,3 +1,4 @@
+var consts = require('../../utils/constants');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -36,7 +37,11 @@ var CreateWorkorderPage = function() {
   var commands = {
 
     navigate: function() {
-      return browser.get('#/workorders/list/new');
+      return browser.get(consts.HASH + consts.workorders.URL_NEW);
+    },
+    selfCheck: function() {
+      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workorders.URL_NEW);
+      expect($(selectors.workorderForm.self).isPresent()).eventually.to.be.true;
     },
     fillInTheFields: function(params) {
       expect($(selectors.workorderForm.self).isPresent()).eventually.to.be.true;

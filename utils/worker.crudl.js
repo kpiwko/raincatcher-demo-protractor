@@ -10,8 +10,10 @@ var expect = chai.expect;
 
 module.exports.create = function(params) {
   mwp.commands.sideClick();
+  mwp.commands.selfCheck();
   utils.waitPresent(mwp.selectors.newButton);
   $(mwp.selectors.newButton).click();
+  cwp.commands.selfCheck();
   cwp.commands.clearValues();
   expect($('#group').isPresent()).eventually.to.be.true;
   $('#group').click();

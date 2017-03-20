@@ -42,30 +42,12 @@ module.exports = function(grunt) {
         }
       }
     }
-    // watch: {
-    //   self: {
-    //     files: ['Gruntfile.js'],
-    //     tasks: [
-    //       'protractor'
-    //     ]
-    //   },
-    //   protractor: {
-    //     files: ['tests/**/*.js'],
-    //     tasks: [
-    //       'protractor'
-    //     ]
-    //   }
-    // }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  // grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-protractor-runner');
-
-  // grunt.registerTask('default', ['watch']);
-  // grunt.registerTask('local', ['protractor:local']);
 
   // Task to run tests with protractor
   grunt.task.registerTask('ui', function(target) {

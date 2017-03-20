@@ -1,3 +1,4 @@
+var consts = require('../../utils/constants');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -22,12 +23,13 @@ var MainWorkerPage = function() {
 
   var commands = {
     navigate: function() {
-      return browser.get('#/workers');
+      return browser.get(consts.HASH + consts.workers.URL);
     },
     sideClick: function() {
       $(selectors.sideMenuButton).click();
     },
     selfCheck: function() {
+      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workers.URL);
       expect(element(by.xpath(selectors.header)).isPresent()).eventually.to.be.true;
       expect($(selectors.newButton).isPresent()).eventually.to.be.true;
       expect($(selectors.searchField).isPresent()).eventually.to.be.true;

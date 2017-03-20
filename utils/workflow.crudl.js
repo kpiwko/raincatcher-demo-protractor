@@ -10,8 +10,10 @@ var expect = chai.expect;
 
 module.exports.create = function(params) {
   mwp.commands.sideClick();
+  mwp.commands.selfCheck();
   utils.waitPresent(mwp.selectors.newButton);
   $(mwp.selectors.newButton).click();
+  cwp.commands.selfCheck();
   cwp.commands.fillInTheFields(params);
   $(cwp.selectors.workflowForm.createButton).click();
   utils.waitPresent(mwp.selectors.stepForm.self);
@@ -21,7 +23,7 @@ module.exports.update = function(title, params) {
   open({title: title});
   expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
   $(mwp.selectors.editButton).click();
-
+  //cwp.commands.selfCheck(); TODO need ID of workflow
   cwp.commands.clearValues();
   cwp.commands.fillInTheFields(params);
   $(cwp.selectors.workflowForm.updateButton).click();
