@@ -18,12 +18,14 @@ var CreateWorkerPage = function() {
       phoneField: '#phonenumber',
       emailField: '#email',
       positionField: '#position',
+      groupSelector: '#group',
 
       invalidNameField: '#workername[aria-invalid="true"]',
       invalidUsernameField: '#username[aria-invalid="true"]',
       invalidPhoneField: '#phonenumber[aria-invalid="true"]',
       invalidEmailField: '#email[aria-invalid="true"]',
       invalidPositionField: '#position[aria-invalid="true"]',
+      invalidGroupSelect: '#group[aria-invalid="true"]',
 
       createButton: 'button[aria-label="Create Worker"]',
       updateButton: 'button[aria-label="Update Worker"]',
@@ -50,13 +52,14 @@ var CreateWorkerPage = function() {
       $(selectors.workerForm.emailField).sendKeys(params.email);
       $(selectors.workerForm.positionField).sendKeys(params.position);
     },
-    verifyInvalid: function() {
+    warningsAreShown: function() {
       expect($(selectors.workerForm.self).isPresent()).eventually.to.be.true;
       expect($(selectors.workerForm.invalidNameField).isPresent()).eventually.to.be.true;
       expect($(selectors.workerForm.invalidUsernameField).isPresent()).eventually.to.be.true;
-      expect($(selectors.workerForm.invalidPhoneField).isresent()).eventually.to.be.true;
+      expect($(selectors.workerForm.invalidPhoneField).isPresent()).eventually.to.be.true;
       expect($(selectors.workerForm.invalidEmailField).isPresent()).eventually.to.be.true;
       expect($(selectors.workerForm.invalidPositionField).isPresent()).eventually.to.be.true;
+      expect($(selectors.workerForm.invalidGroupSelect).isPresent()).eventually.to.be.true;
     },
     clearValues: function() {
       expect($(selectors.workerForm.self).isPresent()).eventually.to.be.true;

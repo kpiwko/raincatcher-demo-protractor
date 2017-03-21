@@ -59,8 +59,8 @@ var CreateWorkorderPage = function() {
       $(selectors.workorderForm.addressField).clear();
       $(selectors.workorderForm.latitudeField).clear();
       $(selectors.workorderForm.longitudeField).clear();
-      // $(selectors.workorderForm.finishDateField).clear();
-      // $(selectors.workorderForm.finishTimeField).clear();
+      // $(selectors.workorderForm.finishDateField).sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
+      // $(selectors.workorderForm.finishTimeField).sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
       $(selectors.workorderForm.summaryField).clear();
     },
     elementsArePresent: function() {
