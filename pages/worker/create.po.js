@@ -52,6 +52,11 @@ var CreateWorkerPage = function() {
       $(selectors.workerForm.emailField).sendKeys(params.email);
       $(selectors.workerForm.positionField).sendKeys(params.position);
     },
+    changePassword: function(password) {
+      expect($(selectors.workerForm.self).isPresent()).eventually.to.be.true;
+      $(selectors.workerForm.passwordField).clear().sendKeys(password);
+      $(selectors.workerForm.phoneField).sendKeys('+420777777777'); // BUG phone should be added
+    },
     warningsAreShown: function() {
       expect($(selectors.workerForm.self).isPresent()).eventually.to.be.true;
       expect($(selectors.workerForm.invalidNameField).isPresent()).eventually.to.be.true;

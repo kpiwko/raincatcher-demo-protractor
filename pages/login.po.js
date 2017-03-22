@@ -39,7 +39,8 @@ var LoginPage = function() {
         .eventually.to.have.string(consts.login.AUTH_FAIL_MSG);
     },
     logout: function() {
-      return $(selectors.logoutSideButton).click();
+      $(selectors.logoutSideButton).click();
+      $(selectors.logoutButton).click();
     }
   };
 

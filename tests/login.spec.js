@@ -1,6 +1,17 @@
 var lop = require('../pages/login.po');
 var scp = require('../pages/scheduler.po');
 
+var cwp = require('../pages/worker/create.po');
+var mwp = require('../pages/worker/main.po');
+
+var workersCrudl = require('../utils/worker.crudl');
+
+var chai = require('chai');
+var chaiAsPromised = require('chai-as-promised');
+chai.use(chaiAsPromised);
+
+var expect = chai.expect;
+
 var utils = require('../utils/utils');
 
 describe('Login into Portal App', function() {
@@ -12,7 +23,7 @@ describe('Login into Portal App', function() {
   });
   it('login with wrong password', function() {
     lop.commands.selfCheck();
-    lop.commands.login('trever', 'xxx');
+    lop.commands.login('daisy', 'xxx');
   });
   it('login error message visible', function() {
     utils.waitPresent(lop.selectors.loginErrorMessage);
@@ -20,35 +31,40 @@ describe('Login into Portal App', function() {
   });
   it('login with correct password', function() {
     lop.commands.selfCheck();
-    lop.commands.login('trever', '123');
+    lop.commands.login('daisy', '123');
   });
   it('scheduler page is displayed', function() {
     utils.waitNotPresent(lop.selectors.logoutButton);
     scp.commands.selfCheck();
   });
-  xit('open user settings', function() {
+  it('open user settings', function() {
+    workersCrudl.open('Daisy Dialer');
+    expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
   });
-  xit('change user password', function() {
+  it('change user password', function() {
+    $(mwp.selectors.editButton).click();
+    cwp.commands.changePassword('daisy');
+    $(cwp.selectors.workerForm.updateButton).click();
   });
   it('logout from portal', function() {
     lop.commands.logout();
     lop.commands.selfCheck();
   });
-  xit('login with new password', function() {
-    lop.commands.login('trever', 'new123');
+  it('login with new password', function() {
+    lop.commands.login('daisy', 'daisy');
   });
-  xit('scheduler page is displayed', function() {
+  it('scheduler page is displayed', function() {
     utils.waitNotPresent(lop.selectors.logoutButton);
     scp.commands.selfCheck();
   });
-  xit('logout from portal', function() {
+  it('logout from portal', function() {
     lop.commands.logout();
     lop.commands.selfCheck();
   });
-  xit('login with old password', function() {
-    lop.commands.login('trever', 'new123');
+  it('login with old password', function() {
+    lop.commands.login('daisy', '123');
   });
-  xit('login error message visible', function() {
+  it('login error message visible', function() {
     utils.waitPresent(lop.selectors.loginErrorMessage);
     lop.commands.errMsgDisplayed();
   });
