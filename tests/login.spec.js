@@ -38,7 +38,7 @@ describe('Login into Portal App', function() {
     scp.commands.selfCheck();
   });
   it('open user settings', function() {
-    workersCrudl.open('Daisy Dialer');
+    workersCrudl.open({ name: 'Daisy Dialer' });
     expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
   });
   it('change user password', function() {

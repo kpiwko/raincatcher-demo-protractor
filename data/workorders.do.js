@@ -1,13 +1,14 @@
 var params = {
-  WORKER_TCRUDL1: 'wo-crudl-1',
-  WORKER_TCRUDL2: 'wo-crudl-2',
-  WORKFLOW_TCRUDL1: 'wo-crudl-1',
-  WORKFLOW_TCRUDL2: 'wo-crudl-2',
-  WORKORDER_TCREATE: 'wo-crudl-create',
-  WORKORDER_TUPDATE1: 'wo-crudl-update-1',
-  WORKORDER_TUPDATE2: 'wo-crudl-update-2',
-  WORKORDER_TDELETE: 'wo-crudl-delete',
-  WORKORDER_TSEARCH: 'wo-crudl-search',
+  WORKER_TCRUDL1: 'wrk-crudl-1',
+  WORKER_TCRUDL2: 'wrk-crudl-2',
+  WORKFLOW_TCRUDL1: 'wfw-crudl-1',
+  WORKFLOW_TCRUDL2: 'wfw-crudl-2',
+  WORKORDER_TCREATE: 'wor-crudl-create',
+  WORKORDER_TCANCEL: 'wor-crudl-cancel',
+  WORKORDER_TUPDATE1: 'wor-crudl-update-1',
+  WORKORDER_TUPDATE2: 'wor-crudl-update-2',
+  WORKORDER_TDELETE: 'wor-crudl-delete',
+  WORKORDER_TSEARCH: 'wor-crudl-search'
 };
 var workorders = {
   CREATE: {
@@ -20,7 +21,7 @@ var workorders = {
     finishDate: '2017-11-11',
     finishDateEdit: '11112017',
     finishTime: '09:52AM',
-    summary: 'test5',
+    summary: 'test5create',
     status: 'New'
   },
   SEARCH: {
@@ -33,7 +34,7 @@ var workorders = {
     finishDate: '2017-11-11',
     finishDateEdit: '11112017',
     finishTime: '09:52AM',
-    summary: 'test5',
+    summary: 'test5search',
     status: 'New'
   },
   UPDATE1: {
@@ -46,20 +47,33 @@ var workorders = {
     finishDate: '2017-11-11',
     finishDateEdit: '11112017',
     finishTime: '09:52AM',
-    summary: 'test5',
+    summary: 'test5update1',
     status: 'New'
   },
   UPDATE2: {
     workflow: params.WORKFLOW_TCRUDL2,
     assignee: params.WORKER_TCRUDL2,
     title: params.WORKORDER_TUPDATE2,
-    address: 'test2updted',
+    address: 'Update Street 18',
     latitude: '789789.8',
     longitude: '35687.7',
     finishDate: '2017-12-12',
     finishDateEdit: '12122017',
     finishTime: '10:00AM',
-    summary: 'test5updated',
+    summary: 'test5update2',
+    status: 'New'
+  },
+  CANCEL: {
+    workflow: params.WORKFLOW_TCRUDL2,
+    assignee: params.WORKER_TCRUDL2,
+    title: params.WORKORDER_TCANCEL,
+    address: 'Cancel Street 18',
+    latitude: '412412.2',
+    longitude: '21026.5',
+    finishDate: '2017-11-11',
+    finishDateEdit: '11112017',
+    finishTime: '09:52AM',
+    summary: 'test5cancel',
     status: 'New'
   },
   DELETE: {
@@ -72,7 +86,7 @@ var workorders = {
     finishDate: '2017-11-11',
     finishDateEdit: '11112017',
     finishTime: '09:52AM',
-    summary: 'test5',
+    summary: 'test5delete',
     status: 'New'
   }
 };

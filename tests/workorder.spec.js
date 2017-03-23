@@ -14,10 +14,9 @@ var mwrkp = require('../pages/worker/main.po');
 
 var workordersCrudl = require('../utils/workorder.crudl');
 var workersCrudl = require('../utils/worker.crudl');
-
 var workflowCrudl = require('../utils/workflow.crudl');
-var utils = require('../utils/utils');
 
+var utils = require('../utils/utils');
 var data = require('../data/workorders.do');
 
 describe('Workorder E2E', function() {
@@ -43,37 +42,38 @@ describe('Workorder E2E', function() {
     });
     it('create workorders', function() {
       workordersCrudl.create(data.workorders.UPDATE1);
+      workordersCrudl.create(data.workorders.CANCEL);
+      workordersCrudl.create(data.workorders.SEARCH);
       workordersCrudl.create(data.workorders.DELETE);
     });
   });
 
   describe('CREATE', function() {
 
-    it('create an empty workorder', function() {
+    it('create an empty{} workorder', function() {
       workordersCrudl.create({}, true);
     });
     it('required field warinigs shown', function() {
       cwp.commands.warningsAreShown();
     });
-    it('create new test workorder', function() {
+    it('create new ' + data.params.WORKORDER_TCREATE + ' workorder', function() {
       workordersCrudl.create(data.workorders.CREATE);
     });
-    xit('verify test workorder details', function() {
+    xit('verify ' + data.params.WORKORDER_TCREATE + ' workorder details', function() {
       workordersCrudl.verifyDetails(data.workorders.CREATE); //RAINCATCH-641
     });
-    it('verify test workorder in list', function() {
+    it('verify ' + data.params.WORKORDER_TCREATE + ' workorder in list', function() {
       workordersCrudl.verifyInList(data.workorders.CREATE);
     });
     it('open workers page', function() {
       mwrkp.commands.sideClick();
       mwrkp.commands.selfCheck();
     });
-    it('select test worker', function() {
-      workersCrudl.open(data.params.WORKER_TCRUDL1);
+    it('select ' + data.params.WORKER_TCRUDL1 + ' worker', function() {
+      workersCrudl.open(data.workers.WORKER1);
     });
-    it('verify workorder in test worker list', function() {
-      workersCrudl.verifyWorkorderInList(data.workorders.CREATE);
-
+    it('verify ' + data.params.WORKORDER_TCREATE + ' workorder in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
+      workersCrudl.verifyWorkorderInList(data.params.WORKER_TCRUDL1, data.workorders.CREATE);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -81,24 +81,24 @@ describe('Workorder E2E', function() {
   });
 
   describe('UPDATE', function() {
-    it('update test workorder details', function() {
+    it('update ' + data.params.WORKORDER_TUPDATE1 + ' workorder details', function() {
       workordersCrudl.update(data.params.WORKORDER_TUPDATE1, data.workorders.UPDATE2);
     });
-    xit('verify test workorder details', function() {
+    xit('verify ' + data.params.WORKORDER_TUPDATE2 + ' workorder details', function() {
       workordersCrudl.verifyDetails(data.workorders.UPDATE2); //RAINCATCH-641
     });
-    it('verify test workorder in list', function() {
+    it('verify ' + data.params.WORKORDER_TUPDATE2 + ' workorder in list', function() {
       workordersCrudl.verifyInList(data.workorders.UPDATE2);
     });
     it('open workers page', function() {
       mwrkp.commands.sideClick();
       mwrkp.commands.selfCheck();
     });
-    it('open test worker', function() {
-      workersCrudl.open(data.params.WORKER_TCRUDL2);
+    it('open ' + data.params.WORKER_TCRUDL2 + ' worker', function() {
+      workersCrudl.open(data.workers.WORKER2);
     });
-    it('verify workorder in test worker list', function() {
-      workersCrudl.verifyWorkorderInList(data.workorders.UPDATE2);
+    it('verify ' + data.params.WORKORDER_TUPDATE2 + ' workorder in ' + data.params.WORKER_TCRUDL2 + ' worker list', function() {
+      workersCrudl.verifyWorkorderInList(data.params.WORKER_TCRUDL2, data.workorders.UPDATE2);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -106,8 +106,8 @@ describe('Workorder E2E', function() {
   });
 
   describe('CANCEL', function() {
-    it('open test workorder details', function() {
-      workordersCrudl.open(data.params.WORKORDER_TCREATE);
+    it('open ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
+      workordersCrudl.open(data.workorders.CANCEL);
     });
     it('press [delete] button', function() {
       expect($(mwp.selectors.deleteButton).isPresent()).eventually.to.be.true;
@@ -118,8 +118,8 @@ describe('Workorder E2E', function() {
       $(mwp.selectors.cancelButton).click();
       expect($(mwp.selectors.cancelButton).isPresent()).eventually.to.be.false;
     });
-    it('verify test workorder in list', function() {
-      workordersCrudl.verifyInList(data.workorders.CREATE);
+    it('verify ' + data.params.WORKORDER_TCANCEL + ' workorder in list', function() {
+      workordersCrudl.verifyInList(data.workorders.CANCEL);
     });
     it('press [new] button', function() {
       expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
@@ -133,8 +133,8 @@ describe('Workorder E2E', function() {
     it('verify [new] button visible', function() {
       expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
     });
-    it('open test workorder details', function() {
-      workordersCrudl.open(data.params.WORKORDER_TCREATE);
+    it('open ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
+      workordersCrudl.open(data.workorders.CANCEL);
     });
     it('press [edit] button', function() {
       expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
@@ -145,28 +145,25 @@ describe('Workorder E2E', function() {
       $(cwp.selectors.workorderForm.cancelButton).click();
       expect($(cwp.selectors.workorderForm.cancelButton).isPresent()).eventually.to.be.false;
     });
-    xit('verify test workorder details', function() {
-      workordersCrudl.verifyDetails(data.workorders.CREATE); //RAINCATCH-641
+    xit('verify ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
+      workordersCrudl.verifyDetails(data.workorders.CANCEL); //RAINCATCH-641
     });
   });
 
   describe('SEARCH', function() {
-    it('create new test workorder', function() {
-      workordersCrudl.create(data.workorders.SEARCH);
-    });
-    it('verify workorders page', function() {
+    it('open workorders page', function() {
       mwp.commands.sideClick();
       mwp.commands.selfCheck();
     });
-    it('search field is visible', function() {
+    it('search field is visible and ' + data.params.WORKORDER_TSEARCH + 'is searched', function() {
       expect($(mwp.selectors.searchField).isPresent()).eventually.to.be.true;
       $(mwp.selectors.searchField).sendKeys(data.params.WORKORDER_TSEARCH);
       browser.sleep(2000); // wait 2 secs to do search
     });
-    it('verify test workorder in list', function() {
+    it('verify ' + data.params.WORKORDER_TSEARCH + ' workorder in list', function() {
       workordersCrudl.verifyInList(data.workorders.SEARCH);
     });
-    it('verify other workorder not in list', function() {
+    it('verify ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
       workordersCrudl.verifyNotInList(data.workorders.DELETE);
     });
     it('clean search text', function() {
@@ -176,21 +173,18 @@ describe('Workorder E2E', function() {
   });
 
   describe('DELETE', function() {
-    it('remove test workorder', function() {
-      workordersCrudl.remove(data.params.WORKORDER_TDELETE);
+    it('remove ' + data.params.WORKORDER_TDELETE + ' workorder', function() {
+      workordersCrudl.remove(data.workorders.DELETE);
     });
-    it('verify test workorder not in list', function() {
+    it('verify ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
       workordersCrudl.verifyNotInList(data.workorders.DELETE);
     });
     it('verify workorders page', function() {
       mwrkp.commands.sideClick();
       mwrkp.commands.selfCheck();
     });
-    it('open test worker', function() {
-      workersCrudl.open(data.params.WORKER_TCRUDL1);
-    });
-    it('verify workorder not in test worker list', function() {
-      workersCrudl.verifyWorkorderNotInList(data.workorders.DELETE);
+    it('verify ' + data.params.WORKORDER_TDELETE + ' workorder not in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
+      workersCrudl.verifyWorkorderNotInList(data.params.WORKER_TCRUDL1, data.workorders.DELETE);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -199,17 +193,18 @@ describe('Workorder E2E', function() {
 
   describe('CLEANUP', function() {
     it('remove workorders', function() {
-      workordersCrudl.remove(data.params.WORKORDER_TCREATE);
-      workordersCrudl.remove(data.params.WORKORDER_TUPDATE2);
-      workordersCrudl.remove(data.params.WORKORDER_TSEARCH);
+      workordersCrudl.remove(data.workorders.CREATE);
+      workordersCrudl.remove(data.workorders.CANCEL);
+      workordersCrudl.remove(data.workorders.SEARCH);
+      workordersCrudl.remove(data.workorders.UPDATE2);
     });
     it('remove workers', function() {
-      workersCrudl.remove(data.params.WORKER_TCRUDL1);
-      workersCrudl.remove(data.params.WORKER_TCRUDL2);
+      workersCrudl.remove(data.workers.WORKER1);
+      workersCrudl.remove(data.workers.WORKER2);
     });
     it('remove workflows', function() {
-      workflowCrudl.remove(data.params.WORKFLOW_TCRUDL1);
-      workflowCrudl.remove(data.params.WORKFLOW_TCRUDL2);
+      workflowCrudl.remove(data.workflows.WORKFLOW1);
+      workflowCrudl.remove(data.workflows.WORKFLOW2);
     });
   });
 });

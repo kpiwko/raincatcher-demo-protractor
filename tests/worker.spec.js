@@ -38,16 +38,16 @@ describe('Worker E2E', function() {
 
   describe('CREATE', function() {
 
-    it('create an empty worker', function() {
+    it('create an empty{} worker', function() {
       workersCrudl.create({}, true);
     });
     it('required field warinigs shown', function() {
       cwp.commands.warningsAreShown();
     });
-    it('create new test worker', function() {
+    it('create new ' + data.params.WORKER_TCREATE + ' worker', function() {
       workersCrudl.create(data.workers.CREATE);
     });
-    xit('verify test worker details', function() {
+    xit('verify ' + data.params.WORKER_TCREATE + ' worker details', function() {
       workersCrudl.verifyDetails(data.workers.CREATE); //RAINCATCH-641
     });
     it('open schedule page', function() { //BUG worker is not visile in list until you open page again
@@ -58,7 +58,7 @@ describe('Worker E2E', function() {
       mwp.commands.sideClick(); // check after double press if only one worker added and warning is visible
       mwp.commands.selfCheck();
     });
-    it('verify test worker in list', function() {
+    it('verify ' + data.params.WORKER_TCREATE + ' worker in list', function() {
       workersCrudl.verifyInList(data.workers.CREATE);
     });
     xit('mobile App login as test worker', function() {
@@ -75,13 +75,13 @@ describe('Worker E2E', function() {
       mwp.commands.sideClick(); // check after double press if only one worker added and warning is visible
       mwp.commands.selfCheck();
     });
-    it('update test workorder details', function() {
+    it('update ' + data.params.WORKER_TUPDATE1 + ' worker details', function() {
       workersCrudl.update(data.params.WORKER_TUPDATE1, data.workers.UPDATE2);
     });
-    xit('verify test workorder details', function() {
+    xit('verify ' + data.params.WORKER_TUPDATE2 + ' worker details', function() {
       workersCrudl.verifyDetails(data.workers.UPDATE2); //RAINCATCH-641
     });
-    it('verify test workorder in list', function() {
+    it('verify ' + data.params.WORKER_TUPDATE2 + ' worker in list', function() {
       workersCrudl.verifyInList(data.workers.UPDATE2);
     });
     xit('mobile App login with new worker', function() {
@@ -90,8 +90,8 @@ describe('Worker E2E', function() {
   });
 
   describe('CANCEL', function() {
-    it('open test worker details', function() {
-      workersCrudl.open(data.params.WORKER_TCANCEL);
+    it('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
+      workersCrudl.open(data.workers.CANCEL);
     });
     it('press [delete] button', function() {
       expect($(mwp.selectors.deleteButton).isPresent()).eventually.to.be.true;
@@ -102,7 +102,7 @@ describe('Worker E2E', function() {
       $(mwp.selectors.cancelButton).click();
       expect($(mwp.selectors.cancelButton).isPresent()).eventually.to.be.false;
     });
-    it('verify test worker in list', function() {
+    it('verify ' + data.params.WORKER_TCANCEL + ' worker in list', function() {
       workersCrudl.verifyInList(data.workers.CANCEL);
     });
     it('open workers page', function() { //BUG worker is not visile in list until you open page again
@@ -121,8 +121,8 @@ describe('Worker E2E', function() {
     it('verify [new] button visible', function() {
       expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
     });
-    it('open test worker details', function() {
-      workersCrudl.open(data.params.WORKER_TCANCEL);
+    it('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
+      workersCrudl.open(data.workers.CANCEL);
     });
     it('press [edit] button', function() {
       expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
@@ -133,7 +133,7 @@ describe('Worker E2E', function() {
       $(cwp.selectors.workerForm.cancelButton).click();
       expect($(cwp.selectors.workerForm.cancelButton).isPresent()).eventually.to.be.false;
     });
-    xit('verify test worker details', function() {
+    xit('verify ' + data.params.WORKER_TCANCEL + ' worker details', function() {
       workersCrudl.verifyDetails(data.workers.CANCEL); //RAINCATCH-641
     });
   });
@@ -152,10 +152,10 @@ describe('Worker E2E', function() {
       $(mwp.selectors.searchField).sendKeys(data.params.WORKER_TSEARCH);
       browser.sleep(2000); // wait 2 secs to do search
     });
-    it('verify test worker in list', function() {
+    it('verify ' + data.params.WORKER_TSEARCH + ' worker in list', function() {
       workersCrudl.verifyInList(data.workers.SEARCH);
     });
-    it('verify other worker not in list', function() {
+    it('verify ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
       workersCrudl.verifyNotInList(data.workers.DELETE);
     });
     it('clean search text', function() {
@@ -165,10 +165,10 @@ describe('Worker E2E', function() {
   });
 
   describe('DELETE', function() {
-    it('remove test worker', function() {
-      workersCrudl.remove(data.params.WORKER_TDELETE);
+    it('remove ' + data.params.WORKER_TDELETE + ' worker', function() {
+      workersCrudl.remove(data.workers.DELETE);
     });
-    it('verify test worker not in list', function() {
+    it('verify ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
       workersCrudl.verifyNotInList(data.workers.DELETE);
     });
     xit('mobile App login as test worker', function() {
@@ -178,10 +178,10 @@ describe('Worker E2E', function() {
 
   describe('CLEANUP', function() {
     it('remove workers', function() {
-      workersCrudl.remove(data.params.WORKER_TCREATE);
-      workersCrudl.remove(data.params.WORKER_TUPDATE2);
-      workersCrudl.remove(data.params.WORKER_TCANCEL);
-      workersCrudl.remove(data.params.WORKER_TSEARCH);
+      workersCrudl.remove(data.workers.CREATE);
+      workersCrudl.remove(data.workers.UPDATE2);
+      workersCrudl.remove(data.workers.CANCEL);
+      workersCrudl.remove(data.workers.SEARCH);
     });
   });
 

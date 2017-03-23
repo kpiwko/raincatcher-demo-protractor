@@ -29,7 +29,7 @@ var CreateWorkflowPage = function() {
       expect($(selectors.workflowForm.self).isPresent()).eventually.to.be.true;
       $(selectors.workflowForm.titleField).sendKeys(params.title);
     },
-    verifyInvalid: function() {
+    warningsAreShown: function() {
       expect($(selectors.workflowForm.self).isPresent()).eventually.to.be.true;
       expect($(selectors.workflowForm.invalidTitleField).isPresent()).eventually.to.be.true;
     },
