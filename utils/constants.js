@@ -8,6 +8,10 @@ module.exports = {
   schedule: {
     URL: '/schedule'
   },
+  groups: {
+    URL: '/groups',
+    URL_NEW: '/groups/new'
+  },
   workers: {
     URL: '/workers',
     URL_NEW:'/workers/new'
