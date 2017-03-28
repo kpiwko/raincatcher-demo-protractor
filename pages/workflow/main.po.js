@@ -12,6 +12,7 @@ var MainWorkflowPage = function() {
     proceedButton: 'button[aria-label="Proceed"]',
     editButton: 'a[aria-label="Edit"]',
     cancelButton: 'button[aria-label="Cancel"]',
+    closeButton: 'div.md-toolbar-tools button[aria-label="Close"]',
     addButton: 'a[aria-label="Add Workflow"]',
     newButton: 'a[aria-label="New Workflow"]',
     searchField: '#search',
@@ -48,7 +49,7 @@ var MainWorkflowPage = function() {
       expect($(selectors.stepForm.self).isPresent()).eventually.to.be.true;
       $(selectors.stepForm.codeField).sendKeys(params.code);
       $(selectors.stepForm.nameField).sendKeys(params.name);
-      $(selectors.stepForm.formIdField).sendKeys(params.formId);
+      // $(selectors.stepForm.formIdField).sendKeys(params.formId);
       $(selectors.stepForm.formField).sendKeys(params.form);
       $(selectors.stepForm.viewField).sendKeys(params.view);
     },
@@ -56,11 +57,11 @@ var MainWorkflowPage = function() {
       expect($(selectors.stepForm.self).isPresent()).eventually.to.be.true;
       $(selectors.stepForm.codeField).clear();
       $(selectors.stepForm.nameField).clear();
-      $(selectors.stepForm.formIdField).clear();
+      // $(selectors.stepForm.formIdField).clear();
       $(selectors.stepForm.formField).clear();
       $(selectors.stepForm.viewField).clear();
     },
-    verifyInvalidStepFields: function() {
+    stepWarningsAreShown: function() {
       expect($(selectors.stepForm.invalidCodeField).isPresent()).eventually.to.be.true;
       expect($(selectors.stepForm.invalidNameField).isPresent()).eventually.to.be.true;
     }

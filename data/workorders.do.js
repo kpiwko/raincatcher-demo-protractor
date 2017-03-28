@@ -96,7 +96,7 @@ var workers = {
     username: params.WORKER_TCRUDL1,
     banner: 'http://' + params.WORKER_TCRUDL1 + '.banners.com',
     avatar: 'http://' + params.WORKER_TCRUDL1 + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TCRUDL1 + '@example.com',
     position: 'Driver',
     group: 'Drivers'
@@ -106,7 +106,7 @@ var workers = {
     username: params.WORKER_TCRUDL2,
     banner: 'http://' + params.WORKER_TCRUDL2 + '.banners.com',
     avatar: 'http://' + params.WORKER_TCRUDL2 + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TCRUDL2 + '@example.com',
     position: 'Driver',
     group: 'Drivers'

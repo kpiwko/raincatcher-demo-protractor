@@ -47,7 +47,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TADD + '.banners.com',
     avatar: 'http://' + params.WORKER_TADD + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TADD + '@example.com',
     position: 'Driver In Group',
     group: params.GROUP_TADD

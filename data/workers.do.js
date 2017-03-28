@@ -14,7 +14,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TCREATE + '.banners.com',
     avatar: 'http://' + params.WORKER_TCREATE + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TCREATE + '@example.com',
     position: 'Driver1',
     group: 'Drivers'
@@ -25,7 +25,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TUPDATE1 + '.banners.com',
     avatar: 'http://' + params.WORKER_TUPDATE1 + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TUPDATE1 + '@example.com',
     position: 'Driver2',
     group: 'Drivers'
@@ -36,7 +36,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TUPDATE2 + '.banners.com',
     avatar: 'http://' + params.WORKER_TUPDATE2 + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TUPDATE2 + '@example.com',
     position: 'Driver3',
     group: 'Drivers'
@@ -47,7 +47,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TDELETE + '.banners.com',
     avatar: 'http://' + params.WORKER_TDELETE + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TDELETE + '@example.com',
     position: 'Driver4',
     group: 'Drivers'
@@ -58,7 +58,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TCANCEL + '.banners.com',
     avatar: 'http://' + params.WORKER_TCANCEL + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TCANCEL + '@example.com',
     position: 'Driver5',
     group: 'Drivers'
@@ -69,7 +69,7 @@ var workers = {
     password: '123',
     banner: 'http://' + params.WORKER_TSEARCH + '.banners.com',
     avatar: 'http://' + params.WORKER_TSEARCH + '.avatars.com',
-    phonenumber: '+420777777777',
+    phonenumber: '777777777',
     email: params.WORKER_TSEARCH + '@example.com',
     position: 'Driver6',
     group: 'Drivers'

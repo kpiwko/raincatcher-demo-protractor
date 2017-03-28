@@ -37,8 +37,10 @@ module.exports.update = function(title, params) {
 var open = function(params) {
   mwp.commands.sideClick();
   mwp.commands.selfCheck();
-  expect(element(by.xpath('//workflow-list/md-list/md-list-item/button/div/div/p[contains(text(),"' + params.title + '")]')).isPresent()).eventually.to.be.true;
-  element(by.xpath('//workflow-list/md-list/md-list-item/button/div/div/p[contains(text(),"' + params.title + '")]')).click();
+  // expect(element(by.xpath('//workflow-list/md-list/md-list-item/button/div/div/p[contains(text(),"' + params.title + '")]')).isPresent()).eventually.to.be.true;
+  // element(by.xpath('//workflow-list/md-list/md-list-item/button/div/div/p[contains(text(),"' + params.title + '")]')).click();
+  expect(element(by.xpath('//md-list/md-list-item/button/div/div/p[contains(text(),"' + params.title + '")]')).isPresent()).eventually.to.be.true;
+  element(by.xpath('//md-list/md-list-item/button/div/div/p[contains(text(),"' + params.title + '")]')).click();
 };
 module.exports.open = open;
 
