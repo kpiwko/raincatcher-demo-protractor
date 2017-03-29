@@ -90,3 +90,18 @@ module.exports.checkValuesAreCorrect = function(locators, expectedValues) {
 module.exports.checkListSize = function(locators, expectedSize) {
   expect(locators.count()).eventually.to.equal(expectedSize);
 };
+
+/**
+ *
+ * @param locator - locator within the menu that is used to navigate to
+ */
+module.exports.navigateToSection = function(locator) {
+  var menu = element(by.css("[aria-label*=Menu]"));
+  menu.isDisplayed().then(function(isDisplayed) {
+    if (isDisplayed) {
+      menu.click();
+    }
+
+    locator.click();
+  });
+};

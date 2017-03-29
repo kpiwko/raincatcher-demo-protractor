@@ -22,6 +22,10 @@ module.exports = {
   },
   workorders: {
     URL: '/workorders/list',
-    URL_NEW: '/workorders/list/new',
+    URL_NEW: '/workorders/list/new'
+  },
+  files: {
+    URL: '/files',
+    URL_DETAIL: '/files/detail/'
   }
 };

@@ -27,7 +27,8 @@
     "chai-as-promised": "^6.0.0",
     "eslint": "^3.16.1",
     "mocha": "^2.5.3",
-    "protractor": "^4.0.14"
+    "protractor": "^4.0.14",
+    "request": "^2.81.0"
   },
   "devDependencies": {
     "grunt": "^1.0.1",
