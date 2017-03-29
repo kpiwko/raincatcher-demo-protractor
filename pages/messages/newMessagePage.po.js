@@ -46,9 +46,11 @@ var NewMessagePage = function() {
     },
     createNewMessage: function(receiver, subject, content) {
       if (receiver !== "") {
-        locators.newMessageSendTo.sendKeys(receiver);
-        utils.waitUntilPresent(locators.selectMenu);
-        locators.selectedReceiver.click();
+        var dropdownParams = [locators.newMessageSendTo,
+          receiver,
+          locators.selectMenu,
+          locators.selectedReceiver ];
+        utils.useDropdownSelector(dropdownParams);
       }
 
       locators.newMessageSubject.sendKeys(subject);

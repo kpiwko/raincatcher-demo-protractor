@@ -26,6 +26,9 @@ var SelectedMessagesPage = function() {
         locators.messageHeaderItems.get(1),
         locators.messageHeaderItems.get(2),
         locators.messageContent];
+      if (receiver !== "") {
+        receiver = " " + receiver;
+      }
       var expectedValues = [ subject,
         'From: ' + sender,
         'To:' + receiver,

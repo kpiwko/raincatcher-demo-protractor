@@ -1,7 +1,7 @@
 var messages = {
   CREATE: {
     sender: "Trever Smith",
-    receiver: " Daisy Dialer",
+    receiver: "Daisy Dialer",
     subject: "New message subject",
     content: "New message content",
     status: "read",

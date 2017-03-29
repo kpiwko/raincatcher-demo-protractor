@@ -105,3 +105,17 @@ module.exports.navigateToSection = function(locator) {
     locator.click();
   });
 };
+
+/**
+ * Utility to alow the use of a dropdown selector
+ * @param  params - array of used values.
+ * params[0] - dropdown locator
+ * params[1] - option text value
+ * params[2] - the panel that pops up ontaining the possible values
+ * params[3] - locator to the selected value thats been selected
+ */
+module.exports.useDropdownSelector = function(params) {
+  params[0].sendKeys(params[1]);
+  this.waitUntilPresent(params[2]);
+  params[3].click();
+};

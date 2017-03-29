@@ -24,7 +24,7 @@ describe('testing messages functionality in demo app', function() {
     messagesCrudl.searchForMessage(message);
   });
 
-  xit('warn if "to" field is not selected', function() {
+  it('warn if "to" field is not selected', function() {
     messagesCrudl.openMessages();
     messagesCrudl.createNewMessage(data.messages.CREATE_INVALID_RECEIVER);
     newMessagePage.commands.checkForReceiverError();
