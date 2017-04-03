@@ -1,18 +1,7 @@
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
-
 var lop = require('../pages/login.po');
 var scp = require('../pages/scheduler.po');
 
-var cwp = require('../pages/workorder/create.po');
-var mwp = require('../pages/workorder/main.po');
-
-var mwrkp = require('../pages/worker/main.po');
-
-var workordersCrudl = require('../utils/workorder.crudl');
+var workordersCrudl = require('../utils/workorder.so');
 var workersCrudl = require('../utils/worker.crudl');
 var workflowCrudl = require('../utils/workflow.crudl');
 
@@ -21,7 +10,7 @@ var data = require('../data/workorders.do');
 
 describe('Workorder E2E', function() {
 
-  before('login', function() {
+  before('LOGIN', function() {
     lop.commands.navigate();
     var progress = 'md-progress-circular';
     utils.waitNotPresent(progress);
@@ -49,30 +38,28 @@ describe('Workorder E2E', function() {
   });
 
   describe('CREATE', function() {
-
     it('create an empty{} workorder', function() {
       workordersCrudl.create({}, true);
     });
-    it('required field warinigs shown', function() {
-      cwp.commands.warningsAreShown();
+    it('check field warinigs shown', function() {
+      workordersCrudl.expectWarningsPresent();
     });
     it('create new ' + data.params.WORKORDER_TCREATE + ' workorder', function() {
       workordersCrudl.create(data.workorders.CREATE);
     });
-    xit('verify ' + data.params.WORKORDER_TCREATE + ' workorder details', function() {
-      workordersCrudl.verifyDetails(data.workorders.CREATE); //RAINCATCH-641
+    it('open ' + data.params.WORKORDER_TCREATE + ' workorder', function() { //RAINCATCH-641
+      workordersCrudl.open(data.workorders.CREATE); // open workorder to see details
     });
-    it('verify ' + data.params.WORKORDER_TCREATE + ' workorder in list', function() {
-      workordersCrudl.verifyInList(data.workorders.CREATE);
+    it('check ' + data.params.WORKORDER_TCREATE + ' workorder details', function() { //RAINCATCH-641
+      workordersCrudl.expectDetailsToBe(data.workorders.CREATE); // compare workorder details
     });
-    it('open workers page', function() {
-      mwrkp.commands.sideClick();
-      mwrkp.commands.selfCheck();
+    it('check ' + data.params.WORKORDER_TCREATE + ' workorder in list', function() {
+      workordersCrudl.expectToBeInList(data.workorders.CREATE);
     });
-    it('select ' + data.params.WORKER_TCRUDL1 + ' worker', function() {
+    it('open ' + data.params.WORKER_TCRUDL1 + ' worker', function() {
       workersCrudl.open(data.workers.WORKER1);
     });
-    it('verify ' + data.params.WORKORDER_TCREATE + ' workorder in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
+    it('check ' + data.params.WORKORDER_TCREATE + ' workorder in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
       workersCrudl.verifyWorkorderInList(data.params.WORKER_TCRUDL1, data.workorders.CREATE);
     });
     xit('mobile App workorder in list', function() {
@@ -84,20 +71,19 @@ describe('Workorder E2E', function() {
     it('update ' + data.params.WORKORDER_TUPDATE1 + ' workorder details', function() {
       workordersCrudl.update(data.params.WORKORDER_TUPDATE1, data.workorders.UPDATE2);
     });
-    xit('verify ' + data.params.WORKORDER_TUPDATE2 + ' workorder details', function() {
-      workordersCrudl.verifyDetails(data.workorders.UPDATE2); //RAINCATCH-641
+    it('open ' + data.params.WORKORDER_TUPDATE2 + ' workorder', function() { //RAINCATCH-641
+      workordersCrudl.open(data.workorders.UPDATE2); // open workorder to see details
     });
-    it('verify ' + data.params.WORKORDER_TUPDATE2 + ' workorder in list', function() {
-      workordersCrudl.verifyInList(data.workorders.UPDATE2);
+    it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder details', function() { //RAINCATCH-641
+      workordersCrudl.expectDetailsToBe(data.workorders.UPDATE2); // verify workorder details
     });
-    it('open workers page', function() {
-      mwrkp.commands.sideClick();
-      mwrkp.commands.selfCheck();
+    it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder in list', function() {
+      workordersCrudl.expectToBeInList(data.workorders.UPDATE2);
     });
     it('open ' + data.params.WORKER_TCRUDL2 + ' worker', function() {
       workersCrudl.open(data.workers.WORKER2);
     });
-    it('verify ' + data.params.WORKORDER_TUPDATE2 + ' workorder in ' + data.params.WORKER_TCRUDL2 + ' worker list', function() {
+    it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder in ' + data.params.WORKER_TCRUDL2 + ' worker list', function() {
       workersCrudl.verifyWorkorderInList(data.params.WORKER_TCRUDL2, data.workorders.UPDATE2);
     });
     xit('mobile App workorder in list', function() {
@@ -110,65 +96,50 @@ describe('Workorder E2E', function() {
       workordersCrudl.open(data.workorders.CANCEL);
     });
     it('press [delete] button', function() {
-      expect($(mwp.selectors.deleteButton).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.deleteButton).click();
-      expect($(mwp.selectors.cancelButton).isPresent()).eventually.to.be.true;
+      workordersCrudl.pressDeleteButton();
     });
     it('press [cancel] button', function() {
-      $(mwp.selectors.cancelButton).click();
-      expect($(mwp.selectors.cancelButton).isPresent()).eventually.to.be.false;
+      workordersCrudl.pressCancelButton();
     });
-    it('verify ' + data.params.WORKORDER_TCANCEL + ' workorder in list', function() {
-      workordersCrudl.verifyInList(data.workorders.CANCEL);
+    it('check ' + data.params.WORKORDER_TCANCEL + ' workorder in list', function() {
+      workordersCrudl.expectToBeInList(data.workorders.CANCEL);
     });
     it('press [new] button', function() {
-      expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.newButton).click();
-      expect($(cwp.selectors.workorderForm.cancelButton).isPresent()).eventually.to.be.true;
+      workordersCrudl.pressNewButton();
     });
     it('press [cancel] button', function() {
-      $(cwp.selectors.workorderForm.cancelButton).click();
-      expect($(cwp.selectors.workorderForm.cancelButton).isPresent()).eventually.to.be.false;
+      workordersCrudl.pressNewCancelButton();
     });
-    it('verify [new] button visible', function() {
-      expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
+    it('check [new] button visible', function() {
+      workordersCrudl.expectNewButtonIsPresent();
     });
     it('open ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
       workordersCrudl.open(data.workorders.CANCEL);
     });
     it('press [edit] button', function() {
-      expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.editButton).click();
-      expect($(cwp.selectors.workorderForm.cancelButton).isPresent()).eventually.to.be.true;
+      workordersCrudl.pressEditButton();
     });
     it('press [cancel] button', function() {
-      $(cwp.selectors.workorderForm.cancelButton).click();
-      expect($(cwp.selectors.workorderForm.cancelButton).isPresent()).eventually.to.be.false;
+      workordersCrudl.pressNewCancelButton();
     });
-    xit('verify ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
-      workordersCrudl.verifyDetails(data.workorders.CANCEL); //RAINCATCH-641
+    it('check ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
+      workordersCrudl.expectDetailsToBe(data.workorders.CANCEL); //RAINCATCH-641
     });
   });
 
   describe('SEARCH', function() {
-    it('open workorders page', function() {
-      mwp.commands.sideClick();
-      mwp.commands.selfCheck();
-    });
+    var searched;
     it('search field is visible and ' + data.params.WORKORDER_TSEARCH + 'is searched', function() {
-      expect($(mwp.selectors.searchField).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.searchField).sendKeys(data.params.WORKORDER_TSEARCH);
-      browser.sleep(2000); // wait 2 secs to do search
+      searched = workordersCrudl.search(data.workorders.SEARCH);
     });
-    it('verify ' + data.params.WORKORDER_TSEARCH + ' workorder in list', function() {
-      workordersCrudl.verifyInList(data.workorders.SEARCH);
+    it('check ' + data.params.WORKORDER_TSEARCH + ' workorder in list', function() {
+      workordersCrudl.verifyElementDetailsEqualTo(searched, data.workorders.SEARCH);
     });
-    it('verify ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
-      workordersCrudl.verifyNotInList(data.workorders.DELETE);
+    it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
+      workordersCrudl.verifyElementDetailsNotEqualTo(searched, data.workorders.DELETE);
     });
-    it('clean search text', function() {
-      $(mwp.selectors.searchField).clear(); // clear search text
-      browser.sleep(2000); // wait 2 secs to do search
+    it('search for all workorders', function() {
+      workordersCrudl.searchReset();
     });
   });
 
@@ -176,14 +147,10 @@ describe('Workorder E2E', function() {
     it('remove ' + data.params.WORKORDER_TDELETE + ' workorder', function() {
       workordersCrudl.remove(data.workorders.DELETE);
     });
-    it('verify ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
-      workordersCrudl.verifyNotInList(data.workorders.DELETE);
+    it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
+      workordersCrudl.expectNotInTheList(data.workorders.DELETE);
     });
-    it('verify workorders page', function() {
-      mwrkp.commands.sideClick();
-      mwrkp.commands.selfCheck();
-    });
-    it('verify ' + data.params.WORKORDER_TDELETE + ' workorder not in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
+    it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
       workersCrudl.verifyWorkorderNotInList(data.params.WORKER_TCRUDL1, data.workorders.DELETE);
     });
     xit('mobile App workorder in list', function() {

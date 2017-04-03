@@ -22,7 +22,9 @@ module.exports = {
   },
   workorders: {
     URL: '/workorders/list',
-    URL_NEW: '/workorders/list/new'
+    URL_NEW: '/workorders/list/new',
+    DEFAULT_HEADING: "No workorder selected.",
+    DEFAULT_BODY: "Select a workorder from the menu, or create a new workorder:"
   },
   files: {
     URL: '/files',

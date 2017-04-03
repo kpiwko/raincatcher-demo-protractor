@@ -19,7 +19,7 @@ module.exports.create = function(params, dummyParams) {
   if (!_dummyParams) {
     expect($(cwp.selectors.workerForm.groupSelector).isPresent()).eventually.to.be.true;
     $(cwp.selectors.workerForm.groupSelector).click();
-    utils.waitClickable('.md-select-menu-container.md-active');
+    utils.waitUntilClickable($('.md-select-menu-container.md-active'));
     expect(element(by.xpath('//md-select-menu/md-content//div[text()="' + params.group + '"]')).isPresent()).eventually.to.be.true;
     element(by.xpath('//md-select-menu/md-content//div[text()="' + params.group + '"]')).click();
     cwp.commands.fillInTheFields(params);

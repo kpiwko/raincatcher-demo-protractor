@@ -18,8 +18,7 @@ var workorders = {
     address: 'Create Street 11',
     latitude: '412412.2',
     longitude: '21026.5',
-    finishDate: '2017-11-11',
-    finishDateEdit: '11112017',
+    finishDate: '11/11/2017',
     finishTime: '09:52AM',
     summary: 'test5create',
     status: 'New'
@@ -31,8 +30,7 @@ var workorders = {
     address: 'Search Street 10',
     latitude: '412412.2',
     longitude: '21026.5',
-    finishDate: '2017-11-11',
-    finishDateEdit: '11112017',
+    finishDate: '11/11/2017',
     finishTime: '09:52AM',
     summary: 'test5search',
     status: 'New'
@@ -44,8 +42,7 @@ var workorders = {
     address: 'Update Street 17',
     latitude: '412412.2',
     longitude: '21026.5',
-    finishDate: '2017-11-11',
-    finishDateEdit: '11112017',
+    finishDate: '11/11/2017',
     finishTime: '09:52AM',
     summary: 'test5update1',
     status: 'New'
@@ -57,8 +54,7 @@ var workorders = {
     address: 'Update Street 18',
     latitude: '789789.8',
     longitude: '35687.7',
-    finishDate: '2017-12-12',
-    finishDateEdit: '12122017',
+    finishDate: '11/11/2017',
     finishTime: '10:00AM',
     summary: 'test5update2',
     status: 'New'
@@ -70,8 +66,7 @@ var workorders = {
     address: 'Cancel Street 18',
     latitude: '412412.2',
     longitude: '21026.5',
-    finishDate: '2017-11-11',
-    finishDateEdit: '11112017',
+    finishDate: '11/11/2017',
     finishTime: '09:52AM',
     summary: 'test5cancel',
     status: 'New'
@@ -83,8 +78,7 @@ var workorders = {
     address: 'Delete Street 18',
     latitude: '412412.2',
     longitude: '21026.5',
-    finishDate: '2017-11-11',
-    finishDateEdit: '11112017',
+    finishDate: '11/11/2017',
     finishTime: '09:52AM',
     summary: 'test5delete',
     status: 'New'

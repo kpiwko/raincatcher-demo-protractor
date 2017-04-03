@@ -1,21 +1,28 @@
 var consts = require('../../utils/constants');
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
+var utils = require('../../utils/utils');
 
 var MainWorkorderPage = function() {
-  var selectors = {
-    header: '//h3/span[text()="Workorders"]',
-    newButton: 'a[aria-label="New Workorder"]',
-    deleteButton: 'button[aria-label="Delete"]',
-    proceedButton: 'button[aria-label="Proceed"]',
-    editButton: 'a[aria-label="Edit"]',
-    cancelButton: 'button[aria-label="Cancel"]',
-    searchField: 'input[name="search"]',
-    summaryInfo: 'workorder>md-list',
-    sideMenuButton: 'md-sidenav>md-list button[aria-label$="Workorders"]'
+  var locators = {
+    header: element(by.xpath('//h3/span[text()="Workorders"]')),
+
+    emptyTitle: element(by.css('h2.md-title')),
+    emptyBody: element(by.css('div p.md-body-1')),
+
+    newButton: element(by.css('a[aria-label="New Workorder"]')),
+    deleteButton: element(by.css('button[aria-label="Delete"]')),
+    proceedButton: element(by.css('button[aria-label="Proceed"]')),
+    editButton: element(by.css('a[aria-label="Edit"]')),
+    cancelButton: element(by.css('button[aria-label="Cancel"]')),
+
+    searchField: element(by.css('input[name="search"]')),
+    summaryInfo: element(by.css('workorder>md-list')),
+    search : element(by.css('workorder-list>form>input[name="search"]')),
+    workorders: element.all(by.repeater('workorder in ctrl.workorders')),
+    workorder: {
+      title: by.css('div>div>h3'),
+      address: by.css('div>div>p')
+    },
+    sideMenuButton: element(by.css('md-sidenav>md-list button[aria-label$="Workorders"]')),
   };
 
   var commands = {
@@ -23,18 +30,55 @@ var MainWorkorderPage = function() {
       return browser.get(consts.HASH + consts.workorders.URL);
     },
     sideClick: function() {
-      $(selectors.sideMenuButton).click();
+      return locators.sideMenuButton.click();
     },
     selfCheck: function() {
-      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workorders.URL);
-      expect(element(by.xpath(selectors.header)).isPresent()).eventually.to.be.true;
-      expect($(selectors.newButton).isPresent()).eventually.to.be.true;
-      expect($(selectors.searchField).isPresent()).eventually.to.be.true;
+      return browser.getLocationAbsUrl().then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workorders.URL);
+        return locators.header.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.emptyTitle.getText();
+      }).then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workorders.DEFAULT_HEADING);
+        return locators.emptyBody.getText();
+      }).then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workorders.DEFAULT_BODY);
+        return locators.newButton.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.searchField.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+      });
+    },
+    search: function(text) {
+      return locators.search.clear().then(function() {
+        locators.search.sendKeys(text);
+      });
+    },
+    count: function() {
+      return locators.workorders.count();
+    },
+    firstInTheList: function() {
+      return locators.workorders.first();
+    },
+    lastInTheList: function() {
+      return locators.workorders.last();
+    },
+    firstClick: function() {
+      return locators.workorders.first().click();
+    },
+    getTitle: function(elem) {
+      return elem.element(locators.workorder.title).getText();
+    },
+    getAddress: function(elem) {
+      return elem.element(locators.workorder.address).getText();
     }
   };
 
   return {
-    selectors, commands
+    locators, commands
   };
 };
 
