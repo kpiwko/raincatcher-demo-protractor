@@ -235,6 +235,14 @@ var expectResultIsNull = function(result) {
 };
 
 /**
+ * Expect result to be null
+ * @param {*} result
+ */
+var expectResultIsUndefined = function(result) {
+  expect(result).to.be.undefined;
+};
+
+/**
  * Return promises from operation call on an each element
  * @param {*} elements to iterate through
  * @param {*} elemCallFunc to be called on each element
@@ -277,6 +285,7 @@ module.exports = {
   expectEachResultsIsTrue,
   expectEachResultsIsFalse,
   expectEachResultsIsNull,
+  expectResultIsUndefined,
 
   getAndCheckListItemTextValue,
 

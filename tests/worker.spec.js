@@ -1,13 +1,6 @@
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
-
 var lop = require('../pages/login.po');
 var scp = require('../pages/scheduler.po');
 
-var cwp = require('../pages/worker/create.po');
 var mwp = require('../pages/worker/main.po');
 
 var workersCrudl = require('../utils/worker.crudl');
@@ -42,24 +35,24 @@ describe('Worker E2E', function() {
       workersCrudl.create({}, true);
     });
     it('required field warinigs shown', function() {
-      cwp.commands.warningsAreShown();
+      workersCrudl.expectWarningsPresent();
     });
     it('create new ' + data.params.WORKER_TCREATE + ' worker', function() {
       workersCrudl.create(data.workers.CREATE);
     });
-    xit('verify ' + data.params.WORKER_TCREATE + ' worker details', function() {
-      workersCrudl.verifyDetails(data.workers.CREATE); //RAINCATCH-641
+    it('check ' + data.params.WORKER_TCREATE + ' worker details', function() {
+      workersCrudl.expectDetailsToBe(data.workers.CREATE);
     });
-    it('open schedule page', function() { //BUG worker is not visile in list until you open page again
+    it('RAINCATCH-747: open schedule page', function() {
       scp.commands.sideClick();
       scp.commands.selfCheck();
     });
-    it('open workers page', function() { //BUG worker is not visile in list until you open page again
-      mwp.commands.sideClick(); // check after double press if only one worker added and warning is visible
+    it('RAINCATCH-747: open workers page', function() {
+      mwp.commands.sideClick();
       mwp.commands.selfCheck();
     });
-    it('verify ' + data.params.WORKER_TCREATE + ' worker in list', function() {
-      workersCrudl.verifyInList(data.workers.CREATE);
+    it('check ' + data.params.WORKER_TCREATE + ' worker in list', function() {
+      workersCrudl.expectToBeInList(data.workers.CREATE);
     });
     xit('mobile App login as test worker', function() {
       // TODO
@@ -67,22 +60,22 @@ describe('Worker E2E', function() {
   });
 
   describe('UPDATE', function() {
-    it('open schedule page', function() { //BUG worker is not visile in list until you open page again
-      scp.commands.sideClick();
-      scp.commands.selfCheck();
-    });
-    it('open workers page', function() { //BUG worker is not visile in list until you open page again
-      mwp.commands.sideClick(); // check after double press if only one worker added and warning is visible
-      mwp.commands.selfCheck();
-    });
     it('update ' + data.params.WORKER_TUPDATE1 + ' worker details', function() {
       workersCrudl.update(data.params.WORKER_TUPDATE1, data.workers.UPDATE2);
     });
-    xit('verify ' + data.params.WORKER_TUPDATE2 + ' worker details', function() {
-      workersCrudl.verifyDetails(data.workers.UPDATE2); //RAINCATCH-641
+    it('check ' + data.params.WORKER_TUPDATE2 + ' worker details', function() {
+      workersCrudl.expectDetailsToBe(data.workers.UPDATE2);
     });
-    it('verify ' + data.params.WORKER_TUPDATE2 + ' worker in list', function() {
-      workersCrudl.verifyInList(data.workers.UPDATE2);
+    it('RAINCATCH-747: open schedule page', function() {
+      scp.commands.sideClick();
+      scp.commands.selfCheck();
+    });
+    it('RAINCATCH-747: open workers page', function() {
+      mwp.commands.sideClick();
+      mwp.commands.selfCheck();
+    });
+    it('check ' + data.params.WORKER_TUPDATE2 + ' worker in list', function() {
+      workersCrudl.expectToBeInList(data.workers.UPDATE2);
     });
     xit('mobile App login with new worker', function() {
       // TODO
@@ -94,73 +87,51 @@ describe('Worker E2E', function() {
       workersCrudl.open(data.workers.CANCEL);
     });
     it('press [delete] button', function() {
-      expect($(mwp.selectors.deleteButton).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.deleteButton).click();
-      expect($(mwp.selectors.cancelButton).isPresent()).eventually.to.be.true;
+      workersCrudl.pressDeleteButton();
     });
     it('press [cancel] button', function() {
-      $(mwp.selectors.cancelButton).click();
-      expect($(mwp.selectors.cancelButton).isPresent()).eventually.to.be.false;
+      workersCrudl.pressCancelButton();
     });
-    it('verify ' + data.params.WORKER_TCANCEL + ' worker in list', function() {
-      workersCrudl.verifyInList(data.workers.CANCEL);
+    it('check ' + data.params.WORKER_TCANCEL + ' worker in list', function() {
+      workersCrudl.expectToBeInList(data.workers.CANCEL);
     });
-    it('open workers page', function() { //BUG worker is not visile in list until you open page again
-      mwp.commands.sideClick(); // check after double press if only one worker added and warning is visible
-      mwp.commands.selfCheck();
+    xit('RAINCATCH-750: press [new] button', function() {
+      workersCrudl.pressNewButton();
     });
-    it('press [new] button', function() {
-      expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.newButton).click();
-      expect($(cwp.selectors.workerForm.cancelButton).isPresent()).eventually.to.be.true;
+    xit('RAINCATCH-750: press [cancel] button', function() {
+      workersCrudl.pressNewCancelButton();
     });
-    it('press [cancel] button', function() {
-      $(cwp.selectors.workerForm.cancelButton).click();
-      expect($(cwp.selectors.workerForm.cancelButton).isPresent()).eventually.to.be.false;
-    });
-    it('verify [new] button visible', function() {
-      expect($(mwp.selectors.newButton).isPresent()).eventually.to.be.true;
+    it('check [new] button visible', function() {
+      workersCrudl.expectNewButtonIsPresent();
     });
     it('open ' + data.params.WORKER_TCANCEL + ' worker details', function() {
       workersCrudl.open(data.workers.CANCEL);
     });
-    it('press [edit] button', function() {
-      expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.editButton).click();
-      expect($(cwp.selectors.workerForm.cancelButton).isPresent()).eventually.to.be.true;
+    xit('RAINCATCH-750: press [edit] button', function() {
+      workersCrudl.pressEditButton();
     });
-    it('press [cancel] button', function() {
-      $(cwp.selectors.workerForm.cancelButton).click();
-      expect($(cwp.selectors.workerForm.cancelButton).isPresent()).eventually.to.be.false;
+    xit('RAINCATCH-750: press [cancel] button', function() {
+      workersCrudl.pressNewCancelButton();
     });
-    xit('verify ' + data.params.WORKER_TCANCEL + ' worker details', function() {
-      workersCrudl.verifyDetails(data.workers.CANCEL); //RAINCATCH-641
+    it('check ' + data.params.WORKER_TCANCEL + ' worker details', function() {
+      workersCrudl.expectDetailsToBe(data.workers.CANCEL);
     });
   });
 
   describe('SEARCH', function() {
-    it('open schedule page', function() { //BUG worker is not visile in list until you open page again
-      scp.commands.sideClick();
-      scp.commands.selfCheck();
+    var searched;
+    it('RAINCATCH-747: search field is visible and ' + data.params.WORKER_TSEARCH + 'is searched', function() {
+      searched = workersCrudl.search(data.workers.SEARCH); // RAINCATCH-747 search input is not reloading
+      // other search mechanism is implemented for this test
     });
-    it('open workers page', function() { //BUG worker is not visile in list until you open page again
-      mwp.commands.sideClick(); // check after double press if only one worker added and warning is visible
-      mwp.commands.selfCheck();
+    it('check ' + data.params.WORKER_TSEARCH + ' worker in list', function() {
+      workersCrudl.expectElementDetailsEqualTo(searched, data.workers.SEARCH);
     });
-    it('search field is visible', function() {
-      expect($(mwp.selectors.searchField).isPresent()).eventually.to.be.true;
-      $(mwp.selectors.searchField).sendKeys(data.params.WORKER_TSEARCH);
-      browser.sleep(2000); // wait 2 secs to do search
+    it('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
+      workersCrudl.expectElementDetailsNotEqualTo(searched, data.workers.DELETE);
     });
-    it('verify ' + data.params.WORKER_TSEARCH + ' worker in list', function() {
-      workersCrudl.verifyInList(data.workers.SEARCH);
-    });
-    it('verify ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
-      workersCrudl.verifyNotInList(data.workers.DELETE);
-    });
-    it('clean search text', function() {
-      $(mwp.selectors.searchField).clear(); // clear search text
-      browser.sleep(2000); // wait 2 secs to do search
+    it('search for all workers', function() {
+      workersCrudl.searchReset();
     });
   });
 
@@ -168,8 +139,8 @@ describe('Worker E2E', function() {
     it('remove ' + data.params.WORKER_TDELETE + ' worker', function() {
       workersCrudl.remove(data.workers.DELETE);
     });
-    it('verify ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
-      workersCrudl.verifyNotInList(data.workers.DELETE);
+    it('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
+      workersCrudl.expectNotInTheList(data.workers.DELETE);
     });
     xit('mobile App login as test worker', function() {
       // TODO
@@ -184,5 +155,4 @@ describe('Worker E2E', function() {
       workersCrudl.remove(data.workers.SEARCH);
     });
   });
-
 });

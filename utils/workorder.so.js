@@ -11,10 +11,7 @@ var utils = require('../utils/utils');
 var create = function(workorder, dummyParams) {
   dummyParams = dummyParams || false;
   mwp.commands.sideClick().then(function() {
-    return mwp.locators.newButton.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    mwp.locators.newButton.click();
+    utils.pressButton(mwp.locators.newButton);
   }).then(function() {
     nwp.commands.selfCheck();
   }).then(function() {
@@ -27,8 +24,8 @@ var create = function(workorder, dummyParams) {
     }
     nwp.locators.createButton.click();
   }).then(function() {
-    // if (!dummyParams) {
-    //   utils.waitPresent(mwp.selectors.summaryInfo); //RAINCATCH-641
+    // if (!dummyParams) { TODO RAINCATCH-641
+    //   utils.waitPresent(mwp.selectors.summaryInfo);
     // }
   });
 };
@@ -40,10 +37,7 @@ var create = function(workorder, dummyParams) {
  */
 var update = function(title, workorder) {
   open({ title: title }).then(function() {
-    return mwp.locators.editButton.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    return mwp.locators.editButton.click();
+    utils.pressButton(mwp.locators.editButton);
   }).then(function() {
     clearAllFields();
   }).then(function() {
@@ -53,7 +47,7 @@ var update = function(title, workorder) {
     fillInTheFields(workorder);
   }).then(function() {
     //TODO button should be Update not Create
-    nwp.locators.createButton.click();
+    utils.pressButton(nwp.locators.createButton);
   });
 };
 
@@ -217,7 +211,7 @@ var searchReset = function() {
  * @param {*} promise element
  * @param {*} expected workorder details to match
  */
-var verifyElementDetailsEqualTo = function(promise, params) {
+var expectElementDetailsEqualTo = function(promise, params) {
   promise.then(function(elem) {
     mwp.commands.getTitle(elem).then(function(result) {
       utils.expectResultIsEquelTo(result, params.title);
@@ -233,7 +227,7 @@ var verifyElementDetailsEqualTo = function(promise, params) {
  * @param {*} promise element
  * @param {*} expected workorder details to match
  */
-var verifyElementDetailsNotEqualTo = function(promise, expected) {
+var expectElementDetailsNotEqualTo = function(promise, expected) {
   promise.then(function(elem) {
     mwp.commands.getTitle(elem).then(function(result) {
       utils.expectResultIsNotEquelTo(result, expected.title);
@@ -380,7 +374,7 @@ var expectNewButtonIsPresent = function() {
 module.exports = {
   create, open, update, remove, search, searchReset,
   expectWarningsPresent, expectFieldsPresent,
-  expectDetailsToBe, verifyElementDetailsEqualTo, verifyElementDetailsNotEqualTo,
+  expectDetailsToBe, expectElementDetailsEqualTo, expectElementDetailsNotEqualTo,
   expectToBeInList, expectNotInTheList,
   pressDeleteButton, pressCancelButton, pressNewButton, pressNewCancelButton,
   expectNewButtonIsPresent, pressEditButton

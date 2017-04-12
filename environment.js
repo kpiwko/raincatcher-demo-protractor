@@ -35,6 +35,5 @@ module.exports = {
   '/?url=http://' + (process.env.CLOUD_HTTP || 'localhost') +
   ':' + (process.env.CLOUD_PORT || cloudAppDefaultPort)
 
-  // baseUrl:
-  // 'https://' + process.env.HTTPS_HOST
+  // baseUrl: process.env.HTTP_HOST
 };

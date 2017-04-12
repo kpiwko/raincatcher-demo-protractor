@@ -10,7 +10,7 @@ var SelectedWorkorderPage = function() {
 
   var commands = {
     selfCheck: function(header) {
-      return locators.workorderForm.isPresent().then(function(result) {
+      return locators.workorderHeader.isPresent().then(function(result) {
         utils.expectResultIsTrue(result);
         return locators.workorderHeader.getText();
       }).then(function(result) {

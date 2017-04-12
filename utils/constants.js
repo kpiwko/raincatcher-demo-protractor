@@ -31,7 +31,9 @@ module.exports = {
   },
   workers: {
     URL: '/workers',
-    URL_NEW:'/workers/new'
+    URL_NEW:'/workers/new',
+    DEFAULT_HEADING: "No worker selected.",
+    DEFAULT_BODY: "Select a worker from the menu, or create a new worker:"
   },
   workflows: {
     URL: '/workflows/list',

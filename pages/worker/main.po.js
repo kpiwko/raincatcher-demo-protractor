@@ -1,24 +1,29 @@
 var consts = require('../../utils/constants');
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
+var utils = require('../../utils/utils');
 
 var MainWorkerPage = function() {
 
-  var selectors = {
-    header: '//h3/span[text()="Workers"]',
-    newButton: 'a[aria-label="New worker"]',
-    workordersPage: '//md-tabs//md-tab-item[text()="Workorders"]',
-    informationPage: '//md-tabs//md-tab-item/[text)="Information"]',
-    workorderItem: '.workorder-item',
-    deleteButton: 'button[aria-label="Delete"]',
-    proceedButton: 'button[aria-label="Proceed"]',
-    editButton: 'a[aria-label="Edit"]',
-    cancelButton: 'button[aria-label="Cancel"]',
-    searchField: 'input[name="search"]',
-    sideMenuButton: 'md-sidenav>md-list button[aria-label$="Workers"]'
+  var locators = {
+    header: element(by.xpath('//h3/span[text()="Workers"]')),
+
+    emptyTitle: element(by.css('h2.md-title')),
+    emptyBody: element(by.css('div p.md-body-1')),
+
+    newButton: element(by.css('a[aria-label="New worker"]')),
+    deleteButton: element(by.css('button[aria-label="Delete"]')),
+    proceedButton: element(by.css('button[aria-label="Proceed"]')),
+    editButton: element(by.css('a[aria-label="Edit"]')),
+    cancelButton: element(by.css('button[aria-label="Cancel"]')),
+
+    searchField: element(by.css('input[name="search"]')),
+    search : element(by.css('worker-list>form>input[name="search"]')),
+    workers: element.all(by.repeater('user in ctrl.workers')),
+    worker: {
+      fullName: by.css('div>div>h3'),
+      position: by.css('div>div>p')
+    },
+
+    sideMenuButton: element(by.css('md-sidenav>md-list button[aria-label$="Workers"]'))
   };
 
   var commands = {
@@ -26,23 +31,55 @@ var MainWorkerPage = function() {
       return browser.get(consts.HASH + consts.workers.URL);
     },
     sideClick: function() {
-      $(selectors.sideMenuButton).click();
+      return locators.sideMenuButton.click();
     },
     selfCheck: function() {
-      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workers.URL);
-      expect(element(by.xpath(selectors.header)).isPresent()).eventually.to.be.true;
-      expect($(selectors.newButton).isPresent()).eventually.to.be.true;
-      expect($(selectors.searchField).isPresent()).eventually.to.be.true;
+      return browser.getLocationAbsUrl().then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workers.URL);
+        return locators.header.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.emptyTitle.getText();
+      }).then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workers.DEFAULT_HEADING);
+        return locators.emptyBody.getText();
+      }).then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workers.DEFAULT_BODY);
+        return locators.newButton.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.searchField.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+      });
     },
-    openWorkordersPage: function() {
-      expect(element(by.xpath(selectors.workordersPage)).isPresent()).eventually.to.be.true;
-      element(by.xpath(selectors.workordersPage)).click();
-      expect($(selectors.workorderItem).isPresent()).eventually.to.be.true;
+    search: function(text) {
+      return locators.search.clear().then(function() {
+        locators.search.sendKeys(text);
+      });
+    },
+    count: function() {
+      return locators.workers.count();
+    },
+    firstInTheList: function() {
+      return locators.workers.first();
+    },
+    lastInTheList: function() {
+      return locators.workers.last();
+    },
+    firstClick: function() {
+      return locators.workers.first().click();
+    },
+    getFullName: function(elem) {
+      return elem.element(locators.worker.fullName).getText();
+    },
+    getPosition: function(elem) {
+      return elem.element(locators.worker.position).getText();
     }
   };
 
   return {
-    selectors, commands
+    locators, commands
   };
 };
 
