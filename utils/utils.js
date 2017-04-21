@@ -5,6 +5,17 @@ chai.use(chaiAsPromised);
 
 var expect = chai.expect;
 var EC = protractor.ExpectedConditions;
+var dragAndDropUtil = require('html-dnd').code;
+
+module.exports.waitNotPresent = function(selector) {
+  var elm = $(selector);
+  return browser.wait(function() {
+    return browser.isElementPresent(elm) //if element is already present, this line will evaluate to true
+      .then(function(present) {
+        return !present;
+      }); // this modifies the previous line so that it evaluates to false until the element is no longer present
+  }, 30000);
+};
 
 var waitPresent = function(selector) {
   var elm = $(selector);
@@ -41,7 +52,7 @@ var waitUntilClickable = function(locator, time) {
  */
 var waitUntilPresent = function(locator, time) {
   time = time || 2000;
-  var message = "waiting for "  + time + "ms for locator to be present";
+  var message = "waiting for "  + time + "ms for" + locator.locator().toString() + "to be present";
   browser.wait(EC.presenceOf(locator), time, message);
   expect(locator.isPresent()).eventually.to.be.true;
 };
@@ -54,6 +65,19 @@ var waitUntilPresent = function(locator, time) {
 var checkElementVisibilityAndValue = function(locator, expectedValue) {
   expect(locator.isPresent()).eventually.to.be.true;
   expect(locator.getText()).eventually.to.equal(expectedValue);
+};
+
+/**
+ * Used to check visibility of a locator and also check that a particular
+ * attribute of the element matches an expected value
+ *
+ * @param locator - locator used to select an element
+ * @param selectedAttribute - the name of the attribute to check
+ * @param expectedValue - expected value to be retrieved by the locator
+ */
+var checkElementVisibilityAndAttributeValue = function(locator, selectedAttribute, expectedValue) {
+  expect(locator.isPresent()).eventually.to.be.true;
+  expect(locator.getAttribute(selectedAttribute)).eventually.to.equal(expectedValue);
 };
 
 /**
@@ -84,6 +108,28 @@ var checkValuesAreCorrect = function(locators, expectedValues) {
  */
 var checkListSize = function(locators, expectedSize) {
   expect(locators.count()).eventually.to.equal(expectedSize);
+};
+
+/**
+ * Used to return the text value associated with a particular item from a list
+ *
+ * @param listLocator - the locator associated with the list
+ * @param index - the index of the list item to find
+ * @param expectedValue - the expected text value
+ */
+var getAndCheckListItemTextValue = function(listLocator, index, expectedValue) {
+  expect(listLocator.get(index).getText()).eventually.to.equal(expectedValue);
+};
+
+/**
+ * Used to provide a utility for drag and drop functionality using the "HTML dnd"
+ * library
+ *
+ * @param elementToMove
+ * @param targetElement
+ */
+var dragAndDrop = function(elementToMove, targetElement) {
+  browser.executeScript(dragAndDropUtil, elementToMove, targetElement);
 };
 
 /**
@@ -216,7 +262,10 @@ module.exports = {
   checkValuesAreCorrect,
   checkListSize,
   checkElementVisibilityAndValue,
+  checkElementVisibilityAndAttributeValue,
   checkElementsArePresent,
+
+  dragAndDrop,
 
   expectResultIsTrue,
   expectResultIsFalse,
@@ -228,6 +277,8 @@ module.exports = {
   expectEachResultsIsTrue,
   expectEachResultsIsFalse,
   expectEachResultsIsNull,
+
+  getAndCheckListItemTextValue,
 
   navigateToSection,
 

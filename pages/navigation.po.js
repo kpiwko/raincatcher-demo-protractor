@@ -1,4 +1,4 @@
-//var utils = require('../utils/utils');
+var utils = require('../utils/utils');
 
 var NavigationTab = function() {
   var locators = {
@@ -9,40 +9,38 @@ var NavigationTab = function() {
 
   var navigateTo = {
     schedulerPage: function() {
-      locators.navListItems.get(0).click();
+      utils.navigateToSection(locators.navListItems.get(0));
     },
     workordersPage: function() {
-      locators.navListItems.get(1).click();
+      utils.navigateToSection(locators.navListItems.get(1));
     },
     workersPage: function() {
-      locators.navListItems.get(2).click();
+      utils.navigateToSection(locators.navListItems.get(2));
     },
     groupsPage: function() {
-      locators.navListItems.get(3).click();
+      utils.navigateToSection(locators.navListItems.get(3));
     },
     mapPage: function() {
-      locators.navListItems.get(4).click();
+      utils.navigateToSection(locators.navListItems.get(4));
     },
     messagesPage: function() {
-      locators.navListItems.get(5).click();
-      //return require('./messages/defaultMessagePage.po'), require('./messages/commonMessagePage.po');
+      utils.navigateToSection(locators.navListItems.get(5));
     },
     filesPage: function() {
-      locators.navListItems.get(6).click();
+      utils.navigateToSection(locators.navListItems.get(6));
     },
     workflowsPage: function() {
-      locators.navListItems.get(7).click();
+      utils.navigateToSection(locators.navListItems.get(7));
     },
     formsPage: function() {
-      locators.navListItems.get(8).click();
+      utils.navigateToSection(locators.navListItems.get(8));
     },
     analyticsPage: function() {
-      locators.navListItems.get(9).click();
+      utils.navigateToSection(locators.navListItems.get(9));
     },
     logoutPage: function() {
-      //this.locators.toggleNavButton.click();
-      locators.navListItems.last().click();
-    },
+      utils.navigateToSection(locators.navListItems.last());
+    }
   };
 
   return {

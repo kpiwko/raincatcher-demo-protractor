@@ -37,6 +37,7 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-eslint": "^19.0.0",
     "grunt-protractor-runner": "^4.0.0",
-    "grunt-shell": "^2.1.0"
+    "grunt-shell": "^2.1.0",
+    "html-dnd": "^1.2.0"
   }
 }

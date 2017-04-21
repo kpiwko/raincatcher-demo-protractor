@@ -1,34 +1,52 @@
-var consts = require('../utils/constants');
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
-
 var SchedulerPage = function() {
 
-  var selectors = {
-    header: "//schedule/md-toolbar/div/h3/span[contains(.,'Scheduler')]",
-    toolbar: 'schedule md-toolbar.wfm-scheduler-toolbar',
-    datePicker: 'md-datepicker[ng-model="ctrl.scheduleDate"]',
-    sideMenuButton: 'md-sidenav>md-list button[aria-label$="Scheduler"]'
+  /**
+   *  The complete set of locators associated with the scheduler page
+   */
+  var locators = {
+    header: element(by.css('.md-toolbar-tools h3 span')),
+    toolbar: element(by.css('md-toolbar')),
+    datePicker: element(by.css('.md-datepicker-input')),
+    invalidDatepicker: element(by.css('.md-datepicker-invalid')),
+    calendarPane: element(by.css('.md-datepicker-calendar-pane')),
+    openCalendarIconButton: element(by.css('.md-datepicker-calendar-icon')),
+    openCalendarTriangleButton: element(by.css('button[aria-label="Open calendar"]')),
+    calendarCurrentDay: element(by.css('.md-calendar-date-today')),
+    calendarSelectedDate: element(by.css('.md-calendar-selected-date')),
+    workOrdersList: element(by.id('workorders-list')),
+    workOrderListHeading: element(by.id('workorders-list')).element(by.css('.md-subhead')),
+    workOrdersListItems: element(by.id('workorders-list')).all(by.css('schedule-workorder-chip')),
+    workOrdersListHeadingValue: "Workorders"
   };
+
+  /**
+   * Actions that are specific to elements only found on the scheduler page
+   */
   var commands = {
-    navigate: function() {
-      return browser.get(consts.HASH + consts.schedule.URL);
+    openCalendarWithIcon: function() {
+      locators.openCalendarIconButton.click();
     },
-    sideClick: function() {
-      $(selectors.sideMenuButton).click();
+    openCalendarWithTriangleButton: function() {
+      locators.openCalendarTriangleButton.click();
     },
-    selfCheck: function() {
-      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.schedule.URL);
-      expect($(selectors.toolbar).isPresent()).eventually.to.be.true;
-      expect($(selectors.datePicker).isPresent()).eventually.to.be.true;
-      expect(element(by.xpath(selectors.header)).isPresent()).eventually.to.be.true;
+    chooseCalendarPaneDate: function(locator) {
+      locator.click();
+    },
+    createTableElementLocator: function(workerIndex, timeIndex) {
+      var selector = '.wfm-scheduler-calendar table tbody tr:nth-child(' + workerIndex + ') td:nth-child(' + timeIndex + ')';
+      return element(by.css(selector));
+    },
+    createNewDateLocator: function(newDayMonthDateYear) {
+      var selector = '[aria-label="' + newDayMonthDateYear + '"]';
+      return locators.calendarPane.element(by.css(selector));
+    },
+    createWorkorderLocator: function(workorderId) {
+      return element(by.id(workorderId));
     }
   };
+
   return {
-    selectors, commands
+    locators, commands
   };
 };
 
