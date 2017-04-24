@@ -1,4 +1,5 @@
 var consts = require('../../utils/constants');
+var utils = require('../../utils/utils');
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
@@ -37,6 +38,7 @@ var MainWorkflowPage = function() {
       return browser.get(consts.HASH + consts.workflows.URL);
     },
     sideClick: function() {
+      utils.navigateToSection();
       $(selectors.sideMenuButton).click();
     },
     selfCheck: function() {

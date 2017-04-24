@@ -9,6 +9,7 @@ var SelectedWorkerPage = function() {
 
     workordersPage: element(by.xpath('//md-tabs//md-tab-item[text()="Workorders"]')),
     informationPage: element(by.xpath('//md-tabs//md-tab-item[text()="Information"]')),
+    // informationPage: element(by.xpath('//md-tabs//md-tab-item/span[text()="Information"]')), // old
     workorderItem: element(by.css('.workorder-item')),
   };
   var commands = {
@@ -23,9 +24,8 @@ var SelectedWorkerPage = function() {
     openWorkordersPage: function() {
       locators.workordersPage.isPresent().then(function(result) {
         utils.expectResultIsTrue(result);
-        return locators.workordersPage.click();
-      }).then(function(result) {
-        utils.expectResultIsTrue(result);
+        locators.workordersPage.click();
+      }).then(function() {
         return locators.workorderItem.isPresent();
       }).then(function(result) {
         utils.expectResultIsTrue(result);

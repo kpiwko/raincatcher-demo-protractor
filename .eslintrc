@@ -35,6 +35,8 @@
   "globals": {
     "angular": false,
     "$fh": false,
-    "localStorage": false
+    "localStorage": false,
+    "window": false,
+    "expect": false
   }
 }

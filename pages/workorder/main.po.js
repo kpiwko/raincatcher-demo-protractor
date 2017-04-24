@@ -30,6 +30,7 @@ var MainWorkorderPage = function() {
       return browser.get(consts.HASH + consts.workorders.URL);
     },
     sideClick: function() {
+      utils.navigateToSection();
       return locators.sideMenuButton.click();
     },
     selfCheck: function() {

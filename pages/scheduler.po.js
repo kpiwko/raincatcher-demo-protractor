@@ -1,5 +1,7 @@
-var SchedulerPage = function() {
+var consts = require('../utils/constants');
+var utils = require('../utils/utils');
 
+var SchedulerPage = function() {
   /**
    *  The complete set of locators associated with the scheduler page
    */
@@ -23,6 +25,20 @@ var SchedulerPage = function() {
    * Actions that are specific to elements only found on the scheduler page
    */
   var commands = {
+    selfCheck: function() {
+      return browser.getLocationAbsUrl().then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.schedule.URL);
+        return locators.header.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.toolbar.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.datePicker.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+      });
+    },
     openCalendarWithIcon: function() {
       locators.openCalendarIconButton.click();
     },

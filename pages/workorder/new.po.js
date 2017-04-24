@@ -16,9 +16,11 @@ var NewWorkorderPage = function() {
       workflow: element(by.css(workorderFormSelector + ' #workflow')),
       assignee: element(by.css(workorderFormSelector + ' #assignee')),
     },
-    finish: {
-      date: element(by.css(workorderFormSelector + ' #inputFinishDate')),
-      time: element(by.css(workorderFormSelector + ' #inputFinishTime')),
+    datetime: {
+      startDate: element(by.css(workorderFormSelector + ' #inputStartDate')),
+      startTime: element(by.css(workorderFormSelector + ' #inputStartTime')),
+      finishDate: element(by.css(workorderFormSelector + ' #inputFinishDate')),
+      finishTime: element(by.css(workorderFormSelector + ' #inputFinishTime')),
     },
     warnings: {
       invalidWorkflow: element(by.css('[ng-messages="workorderForm.workflow.$error"] div')),
@@ -26,6 +28,8 @@ var NewWorkorderPage = function() {
       invalidAddress: element(by.css('[ng-messages="workorderForm.address.$error"] div')),
       invalidLatitude: element(by.css('[ng-messages="workorderForm.lattitude.$error"] div')),
       invalidLongitude: element(by.css('[ng-messages="workorderForm.longitude.$error"] div')),
+      invalidStartDate: element(by.css('[ng-messages="workorderForm.startDate.$error"] div')),
+      invalidStartTime: element(by.css('[ng-messages="workorderForm.startTime.$error"] div')),
       invalidFinishDate: element(by.css('[ng-messages="workorderForm.finishDate.$error"] div')),
       invalidFinishTime: element(by.css('[ng-messages="workorderForm.finishTime.$error"] div')),
       invalidSummary: element(by.css('[ng-messages="workorderForm.summary.$error"] div')),
@@ -61,21 +65,33 @@ var NewWorkorderPage = function() {
     enterLongitude: function(longitude) {
       return locators.fields.longitude.sendKeys(longitude);
     },
+    enterStartDate: function(finishDateEdit) {
+      return locators.datetime.startDate.sendKeys(finishDateEdit);
+    },
+    enterStartTime: function(finishTime) {
+      return locators.datetime.startTime.sendKeys(finishTime);
+    },
     enterFinishDate: function(finishDateEdit) {
-      return locators.finish.date.sendKeys(finishDateEdit);
+      return locators.datetime.finishDate.sendKeys(finishDateEdit);
     },
     enterFinishTime: function(finishTime) {
-      return locators.finish.time.sendKeys(finishTime);
+      return locators.datetime.finishTime.sendKeys(finishTime);
     },
     enterSummary: function(summary) {
       return locators.fields.summary.sendKeys(summary);
     },
     // clear date and time data
+    clearStartDate() {
+      locators.datetime.startDate.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
+    },
+    clearStartTime() {
+      locators.datetime.startTime.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
+    },
     clearFinishDate() {
-      locators.finish.date.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
+      locators.datetime.finishDate.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
     },
     clearFinishTime() {
-      locators.finish.time.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
+      locators.datetime.finishTime.sendKeys(protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE + protractor.Key.TAB + protractor.Key.BACK_SPACE);
     }
   };
 

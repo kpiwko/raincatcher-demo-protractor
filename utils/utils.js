@@ -1,9 +1,5 @@
 var _ = require('lodash');
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
 
-var expect = chai.expect;
 var EC = protractor.ExpectedConditions;
 var dragAndDropUtil = require('html-dnd').code;
 
@@ -137,13 +133,15 @@ var dragAndDrop = function(elementToMove, targetElement) {
  * @param locator - locator within the menu that is used to navigate to
  */
 var navigateToSection = function(locator) {
+  locator = locator || undefined;
   var menu = element(by.css("[aria-label*=Menu]"));
   menu.isDisplayed().then(function(isDisplayed) {
     if (isDisplayed) {
       menu.click();
     }
-
-    locator.click();
+    if (locator) {
+      locator.click();
+    }
   });
 };
 
@@ -266,6 +264,13 @@ var pressButton = function(button) {
   });
 };
 
+var inherit = function(child, base, properties) {
+  child.prototype = _.create(base.prototype, _.assign({
+    '_super': base.prototype,
+    'constructor': child
+  }, properties));
+};
+
 module.exports = {
   checkValuesAreCorrect,
   checkListSize,
@@ -300,5 +305,7 @@ module.exports = {
 
   useDropdownSelector,
 
-  pressButton
+  pressButton,
+
+  inherit
 };

@@ -1,7 +1,9 @@
 var lop = require('../pages/login.po');
 var scp = require('../pages/scheduler.po');
 
-var workordersCrudl = require('../utils/workorder.so');
+var WorkorderService = require('../utils/workorder.so');
+var workorderService = new WorkorderService();
+
 var workersCrudl = require('../utils/worker.crudl');
 var workflowCrudl = require('../utils/workflow.crudl');
 
@@ -30,31 +32,31 @@ describe('Workorder E2E', function() {
       workflowCrudl.create(data.workflows.WORKFLOW2);
     });
     it('create workorders', function() {
-      workordersCrudl.create(data.workorders.UPDATE1);
-      workordersCrudl.create(data.workorders.CANCEL);
-      workordersCrudl.create(data.workorders.SEARCH);
-      workordersCrudl.create(data.workorders.DELETE);
+      workorderService.create(data.workorders.UPDATE1);
+      workorderService.create(data.workorders.CANCEL);
+      workorderService.create(data.workorders.SEARCH);
+      workorderService.create(data.workorders.DELETE);
     });
   });
 
   describe('CREATE', function() {
     it('create an empty{} workorder', function() {
-      workordersCrudl.create({}, true);
+      workorderService.create({}, true);
     });
     it('check field warinigs shown', function() {
-      workordersCrudl.expectWarningsPresent();
+      workorderService.expectWarningsPresent();
     });
     it('create new ' + data.params.WORKORDER_TCREATE + ' workorder', function() {
-      workordersCrudl.create(data.workorders.CREATE);
+      workorderService.create(data.workorders.CREATE);
     });
     it('open ' + data.params.WORKORDER_TCREATE + ' workorder', function() { //RAINCATCH-641
-      workordersCrudl.open(data.workorders.CREATE); // open workorder to see details
+      workorderService.open(data.workorders.CREATE); // open workorder to see details
     });
     it('check ' + data.params.WORKORDER_TCREATE + ' workorder details', function() { //RAINCATCH-641
-      workordersCrudl.expectDetailsToBe(data.workorders.CREATE); // compare workorder details
+      workorderService.expectDetailsToBe(data.workorders.CREATE); // compare workorder details
     });
     it('check ' + data.params.WORKORDER_TCREATE + ' workorder in list', function() {
-      workordersCrudl.expectToBeInList(data.workorders.CREATE);
+      workorderService.expectToBeInList(data.workorders.CREATE);
     });
     it('open ' + data.params.WORKER_TCRUDL1 + ' worker', function() {
       workersCrudl.open(data.workers.WORKER1);
@@ -69,16 +71,16 @@ describe('Workorder E2E', function() {
 
   describe('UPDATE', function() {
     it('update ' + data.params.WORKORDER_TUPDATE1 + ' workorder details', function() {
-      workordersCrudl.update(data.params.WORKORDER_TUPDATE1, data.workorders.UPDATE2);
+      workorderService.update(data.workorders.UPDATE1, data.workorders.UPDATE2);
     });
     it('open ' + data.params.WORKORDER_TUPDATE2 + ' workorder', function() { //RAINCATCH-641
-      workordersCrudl.open(data.workorders.UPDATE2); // open workorder to see details
+      workorderService.open(data.workorders.UPDATE2); // open workorder to see details
     });
     it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder details', function() { //RAINCATCH-641
-      workordersCrudl.expectDetailsToBe(data.workorders.UPDATE2); // verify workorder details
+      workorderService.expectDetailsToBe(data.workorders.UPDATE2); // verify workorder details
     });
     it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder in list', function() {
-      workordersCrudl.expectToBeInList(data.workorders.UPDATE2);
+      workorderService.expectToBeInList(data.workorders.UPDATE2);
     });
     it('open ' + data.params.WORKER_TCRUDL2 + ' worker', function() {
       workersCrudl.open(data.workers.WORKER2);
@@ -93,65 +95,65 @@ describe('Workorder E2E', function() {
 
   describe('CANCEL', function() {
     it('open ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
-      workordersCrudl.open(data.workorders.CANCEL);
+      workorderService.open(data.workorders.CANCEL);
     });
     it('press [delete] button', function() {
-      workordersCrudl.pressDeleteButton();
+      workorderService.pressDeleteButton();
     });
     it('press [cancel] button', function() {
-      workordersCrudl.pressCancelButton();
+      workorderService.pressCancelButton();
     });
     it('check ' + data.params.WORKORDER_TCANCEL + ' workorder in list', function() {
-      workordersCrudl.expectToBeInList(data.workorders.CANCEL);
+      workorderService.expectToBeInList(data.workorders.CANCEL);
     });
     it('press [new] button', function() {
-      workordersCrudl.pressNewButton();
+      workorderService.pressNewButton();
     });
     it('press [cancel] button', function() {
-      workordersCrudl.pressNewCancelButton();
+      workorderService.pressNewCancelButton();
     });
     it('check [new] button visible', function() {
-      workordersCrudl.expectNewButtonIsPresent();
+      workorderService.expectNewButtonIsPresent();
     });
     it('open ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
-      workordersCrudl.open(data.workorders.CANCEL);
+      workorderService.open(data.workorders.CANCEL);
     });
     it('press [edit] button', function() {
-      workordersCrudl.pressEditButton();
+      workorderService.pressEditButton();
     });
     it('press [cancel] button', function() {
-      workordersCrudl.pressNewCancelButton();
+      workorderService.pressNewCancelButton();
     });
     it('check ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
-      workordersCrudl.expectDetailsToBe(data.workorders.CANCEL); //RAINCATCH-641
+      workorderService.expectDetailsToBe(data.workorders.CANCEL); //RAINCATCH-641
     });
   });
 
   describe('SEARCH', function() {
     var searched;
     it('search field is visible and ' + data.params.WORKORDER_TSEARCH + 'is searched', function() {
-      searched = workordersCrudl.search(data.workorders.SEARCH);
+      searched = workorderService.search(data.workorders.SEARCH);
     });
     it('check ' + data.params.WORKORDER_TSEARCH + ' workorder in list', function() {
-      workordersCrudl.verifyElementDetailsEqualTo(searched, data.workorders.SEARCH);
+      workorderService.expectElementDetailsEqualTo(searched, data.workorders.SEARCH);
     });
     it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
-      workordersCrudl.verifyElementDetailsNotEqualTo(searched, data.workorders.DELETE);
+      workorderService.expectElementDetailsNotEqualTo(searched, data.workorders.DELETE);
     });
     it('search for all workorders', function() {
-      workordersCrudl.searchReset();
+      workorderService.searchReset();
     });
   });
 
   describe('DELETE', function() {
     it('remove ' + data.params.WORKORDER_TDELETE + ' workorder', function() {
-      workordersCrudl.remove(data.workorders.DELETE);
+      workorderService.remove(data.workorders.DELETE);
     });
     it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
-      workordersCrudl.expectNotInTheList(data.workorders.DELETE);
+      workorderService.expectNotInTheList(data.workorders.DELETE);
     });
     it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
-      workersCrudl.verifyWorkorderNotInList(data.params.WORKER_TCRUDL1, data.workorders.DELETE);
+      workersCrudl.expectNotInTheList(data.params.WORKER_TCRUDL1, data.workorders.DELETE);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -160,10 +162,10 @@ describe('Workorder E2E', function() {
 
   describe('CLEANUP', function() {
     it('remove workorders', function() {
-      workordersCrudl.remove(data.workorders.CREATE);
-      workordersCrudl.remove(data.workorders.CANCEL);
-      workordersCrudl.remove(data.workorders.SEARCH);
-      workordersCrudl.remove(data.workorders.UPDATE2);
+      workorderService.remove(data.workorders.CREATE);
+      workorderService.remove(data.workorders.CANCEL);
+      workorderService.remove(data.workorders.SEARCH);
+      workorderService.remove(data.workorders.UPDATE2);
     });
     it('remove workers', function() {
       workersCrudl.remove(data.workers.WORKER1);

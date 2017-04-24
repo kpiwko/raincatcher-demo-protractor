@@ -7,6 +7,12 @@ module.exports = {
   seleniumAddress:
   (process.env.SELENIUM_URL || 'http://localhost:4444/wd/hub'),
 
+  allScriptsTimeout: 20000,
+  slowThreshold: 5000,
+  mochaTimeout: 60000,
+  defaultPageLoadTimeout: 10000,
+  defaultImplicitWait: 2000,
+
   // Capabilities to be passed to the webdriver instance.
   capabilities: {
     'browserName':
@@ -14,12 +20,23 @@ module.exports = {
     'version':
     (process.env.TEST_BROWSER_VERSION || 'ANY'),
     'chromeOptions': {
+      prefs: {
+        'credentials_enable_service': false,
+        'profile': {
+          'password_manager_enabled': false
+        }
+      },
       args: [
         'no-sandbox',
         'user-data-dir=/tmp/chrome',
         'no-default-browser-check',
-        'unlimited-storage'
-      ]
+        'unlimited-storage',
+        'disable-cache',
+        'disable-application-cache',
+        'disable-offline-load-stale-cache',
+        'disk-cache-size=0',
+        'v8-cache-options=off'
+      ],
     }
   },
   // Default http port to host the web server
@@ -35,5 +52,5 @@ module.exports = {
   '/?url=http://' + (process.env.CLOUD_HTTP || 'localhost') +
   ':' + (process.env.CLOUD_PORT || cloudAppDefaultPort)
 
-  // baseUrl: process.env.HTTP_HOST
+  // baseUrl: process.env.HTTP_HOST,
 };

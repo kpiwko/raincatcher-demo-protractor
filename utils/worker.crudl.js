@@ -34,7 +34,7 @@ module.exports.create = function(worker, dummyParams) {
     nwp.locators.createButton.click();
   }).then(function() {
     if (!dummyParams) {
-      //  utils.waitPresent() implement for XPath locators
+      // utils.waitUntilPresent(swp.locators.informationPage);//  implement for XPath locators
       swp.locators.informationPage.isPresent().then(function(result) {
         utils.expectResultIsTrue(result);
       });

@@ -1,80 +1,29 @@
-var nwp = require('../pages/workorder/new.po');
-var mwp = require('../pages/workorder/main.po');
-var swp = require('../pages/workorder/selected.po');
+var pageObject = require('../pages/workorder');
+
+var nwp = pageObject.new;
+var mwp = pageObject.main;
+var swp = pageObject.selected;
+
 var utils = require('../utils/utils');
+var BaseService = require('../utils/base.so');
 
-/**
- * Create new workorder
- * @param {*} workorder to be created
- * @param {*} dummyParams for dummy workorder creation
- */
-var create = function(workorder, dummyParams) {
-  dummyParams = dummyParams || false;
-  mwp.commands.sideClick().then(function() {
-    utils.pressButton(mwp.locators.newButton);
-  }).then(function() {
-    nwp.commands.selfCheck();
-  }).then(function() {
-    if (!dummyParams) {
-      selectDropdowns(workorder);
-    }
-  }).then(function() {
-    if (!dummyParams) {
-      fillInTheFields(workorder);
-    }
-    nwp.locators.createButton.click();
-  }).then(function() {
-    // if (!dummyParams) { TODO RAINCATCH-641
-    //   utils.waitPresent(mwp.selectors.summaryInfo);
-    // }
-  });
-};
+var _ = require('lodash');
 
-/**
- * Update workorder details with new workorder
- * @param {*} title of updatee workorder
- * @param {*} workorder to be filfilled
- */
-var update = function(title, workorder) {
-  open({ title: title }).then(function() {
-    utils.pressButton(mwp.locators.editButton);
-  }).then(function() {
-    clearAllFields();
-  }).then(function() {
-    selectDropdowns(workorder);
-    // TOOD need ID of workorder /workorders/list/workorder/ryA2nIaie/edit
-  }).then(function() {
-    fillInTheFields(workorder);
-  }).then(function() {
-    //TODO button should be Update not Create
-    utils.pressButton(nwp.locators.createButton);
-  });
-};
+function WorkorderService() {
+  pageObject.main.locators.item = pageObject.main.locators.workorder;
+  pageObject.main.locators.items = pageObject.main.locators.workorders;
+  pageObject.new.locators.itemForm = pageObject.new.locators.workorderForm;
 
-/**
- * Open workorder details
- * @param {*} workorder to be openned
- */
-var open = function(workorder) {
-  return mwp.commands.sideClick().then(function() {
-    mwp.commands.selfCheck();
-  }).then(function() {
-    mwp.locators.workorders.filter(function(wor) {
-      return wor.element(mwp.locators.workorder.title).getText().then(function(text) {
-        return text === this.title;
-      }.bind({ title: workorder.title }));
-    })
-    .then(function(filtered) {
-      filtered[0].click();
-    });
-  });
-};
+  BaseService.call(this, pageObject);
+}
+
+utils.inherit(WorkorderService, BaseService);
 
 /**
  * Select dropdowns from workorder form
  * @param {*} workorder details to be selected
  */
-var selectDropdowns = function(workorder) {
+WorkorderService.prototype.selectDropdowns = function(workorder) {
   // TODO workorder type is default now
   // expect($('#workorderType')).isPresent().eventually.to.be.true;
   var workflow = element(by.xpath("//md-select-menu/md-content/md-option/div[contains(text(),'- " + workorder.workflow + "')]"));
@@ -105,10 +54,10 @@ var selectDropdowns = function(workorder) {
 };
 
 /**
- * FIll workorder details into fields
+ * Fill workorder details into fields
  * @param {*} workorder to be created
  */
-var fillInTheFields = function(workorder) {
+WorkorderService.prototype.fillInTheFields = function(workorder) {
   nwp.locators.workorderForm.isPresent().then(function(result) {
     utils.expectResultIsTrue(result);
     nwp.commands.enterTitle(workorder.title);
@@ -119,6 +68,10 @@ var fillInTheFields = function(workorder) {
   }).then(function() {
     nwp.commands.enterLongitude(workorder.longitude);
   }).then(function() {
+    nwp.commands.enterStartDate(workorder.startDate);
+  }).then(function() {
+    nwp.commands.enterStartTime(workorder.startTime);
+  }).then(function() {
     nwp.commands.enterFinishDate(workorder.finishDate);
   }).then(function() {
     nwp.commands.enterFinishTime(workorder.finishTime);
@@ -128,24 +81,37 @@ var fillInTheFields = function(workorder) {
 };
 
 /**
- * Remove workorder from workorders list
- * @param {*} workorder ro be removed
+ * Search workorder in workorders list
+ * @param {*} workorder to be searched
  */
-var remove = function(workorder) {
-  open(workorder).then(function() {
-    return mwp.locators.deleteButton.isPresent();
-  }).then(function(result) {
+WorkorderService.prototype.searchForItem = function(workorder, count) {
+  count = count || 1;
+  return pageObject.main.commands.search(workorder.title).then(function() {
+    pageObject.main.commands.count().then(function(c) {
+      utils.expectResultIsEquelTo(c, count);
+    });
+  });
+};
+
+/**
+ * Check if all fields of item Form are present
+ */
+WorkorderService.prototype.expectFieldsPresent = function() {
+  var isPresent = function(x) {
+    return x.isPresent();
+  };
+  // var pageObject = this.pageObject;
+  isPresent(nwp.locators.workorderForm).then(function(result) {
     utils.expectResultIsTrue(result);
-    return mwp.locators.deleteButton.click();
-  }).then(function() {
-    return mwp.locators.proceedButton.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsTrue(result);
-    mwp.locators.proceedButton.click();
-  }).then(function() {
-    return mwp.locators.proceedButton.isPresent();
-  }).then(function(result) {
-    utils.expectResultIsFalse(result);
+    return utils.returnAllPromises(nwp.locators.fields, isPresent);
+  }).then(function(results) { // fields present
+    utils.expectEachResultsIsTrue(results);
+    return utils.returnAllPromises(nwp.locators.dropdowns, isPresent);
+  }).then(function(results) { // dropdowns present
+    utils.expectEachResultsIsTrue(results);
+    return utils.returnAllPromises(nwp.locators.datetime, isPresent);
+  }).then(function(results) { // date and time present
+    utils.expectEachResultsIsTrue(results);
   });
 };
 
@@ -153,7 +119,7 @@ var remove = function(workorder) {
  * Compare actual workorder details with expected
  * @param {*} workorder to be compared to
  */
-var expectDetailsToBe = function(workorder) {
+WorkorderService.prototype.expectDetailsToBe = function(workorder) {
   swp.commands.getDetails()
   .then(function(details) {
     var status = swp.commands.getStatus(details);
@@ -179,203 +145,23 @@ var expectDetailsToBe = function(workorder) {
   });
 };
 
-/**
- * Search for specific workorder
- * @param {*} workorder to be searched
- * @param {*} count of same workorders
- */
-var search = function(workorder, count) {
-  count = count || 1;
-  return mwp.commands.sideClick().then(function() {
-    return mwp.commands.selfCheck();
-  }).then(function() {
-    mwp.commands.search(workorder.title).then(function() {
-      mwp.commands.count().then(function(c) {
-        utils.expectResultIsEquelTo(c, count);
-      });
-    });
-    return mwp.commands.firstInTheList();
-  });
+WorkorderService.prototype.expectElementInfo = function() {
+  console.log('RAINCATCH-781: need to implement Workorder functionality');
+  // mwp.locators.summaryInfo.isPresent().then(function(result) { // RAINCATCH-641
+  //   utils.expectEachResultsIsTrue(result);
+  // });
 };
 
-var searchReset = function() {
-  return mwp.commands.sideClick().then(function() {
-    return mwp.commands.selfCheck();
-  }).then(function() {
-    mwp.locators.search.clear();
-  });
-};
-
-/**
- * Check actual element details are equal to expected
- * @param {*} promise element
- * @param {*} expected workorder details to match
- */
-var expectElementDetailsEqualTo = function(promise, params) {
+WorkorderService.prototype.expectElementDetails = function(promise, expected, expectFunc) {
+  expectFunc = expectFunc || _.noop;
   promise.then(function(elem) {
     mwp.commands.getTitle(elem).then(function(result) {
-      utils.expectResultIsEquelTo(result, params.title);
+      expectFunc(result, expected.title);
     });
     mwp.commands.getAddress(elem).then(function(result) {
-      utils.expectResultIsEquelTo(result, params.address);
+      expectFunc(result, expected.address);
     });
   });
 };
 
-/**
- * Check actual element details not equal to expected
- * @param {*} promise element
- * @param {*} expected workorder details to match
- */
-var expectElementDetailsNotEqualTo = function(promise, expected) {
-  promise.then(function(elem) {
-    mwp.commands.getTitle(elem).then(function(result) {
-      utils.expectResultIsNotEquelTo(result, expected.title);
-    });
-    mwp.commands.getAddress(elem).then(function(result) {
-      utils.expectResultIsNotEquelTo(result, expected.address);
-    });
-  });
-};
-
-/**
- * Expect workorder in workorder list
- * @param {*} workorder
- */
-var expectToBeInList = function(workorder) {
-  search(workorder).then(function(elem) {
-    mwp.commands.getTitle(elem).then(function(result) {
-      utils.expectResultIsEquelTo(result, workorder.title);
-    });
-    mwp.commands.getAddress(elem).then(function(result) {
-      utils.expectResultIsEquelTo(result, workorder.address);
-    });
-  });
-};
-
-/**
- * Expect workorder not in workorder list
- * @param {*} workorder
- */
-var expectNotInTheList = function(workorder) {
-  mwp.commands.search(workorder.title).then(function() {
-    mwp.commands.count().then(function(count) {
-      utils.expectResultIsEquelTo(count, 0);
-    });
-  });
-};
-
-/**
- * Clear all Fields of Workorder Form
- */
-var clearAllFields = function() {
-  var clear = function(x) {
-    return x.clear();
-  };
-  nwp.locators.workorderForm.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.fields, clear);
-  }).then(function(results) { // clear fields
-    utils.expectEachResultsIsNull(results);
-  }).then(function() { // clear date and time
-    nwp.commands.clearFinishDate();
-    nwp.commands.clearFinishTime();
-  });
-};
-
-/**
- * Check if all fields of Workorder Form are present
- */
-var expectFieldsPresent = function() {
-  var isPresent = function(x) {
-    return x.isPresent();
-  };
-  isPresent(nwp.locators.workorderForm).then(function(result) {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.fields, isPresent);
-  }).then(function(results) { // fields present
-    utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.dropdowns, isPresent);
-  }).then(function(results) { // dropdowns present
-    utils.expectEachResultsIsTrue(results);
-    return utils.returnAllPromises(nwp.locators.finish, isPresent);
-  }).then(function(results) { // date and time present
-    utils.expectEachResultsIsTrue(results);
-  });
-};
-
-/**
- * Check all warnings of Workorder Form are present
- */
-var expectWarningsPresent = function() {
-  var isPresent = function(x) {
-    return x.isPresent();
-  };
-  isPresent(nwp.locators.workorderForm).then(function(result) {
-    utils.expectResultIsTrue(result);
-    return utils.returnAllPromises(nwp.locators.warnings, isPresent);
-  }).then(function(results) {
-    utils.expectEachResultsIsTrue(results);
-  });
-};
-
-/**
- * Press delete button
- * TODO delete button is still present when pressed
- */
-var pressDeleteButton = function() {
-  return mwp.locators.deleteButton.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-    mwp.locators.deleteButton.click();
-  }).then(function() {
-    return mwp.locators.deleteButton.isPresent();
-  }).then(function(/*result*/) { // BUG delete button should not be visible
-    // utils.expectResultIsFalse(result);
-  });
-};
-
-/**
- * Press cancel button
- */
-var pressCancelButton = function() {
-  utils.pressButton(mwp.locators.cancelButton);
-};
-
-/**
- * Press new button
- */
-var pressNewButton = function() {
-  utils.pressButton(mwp.locators.newButton);
-};
-
-/**
- * Press Cancel button on new workorderpage
- */
-var pressNewCancelButton = function() {
-  utils.pressButton(nwp.locators.cancelButton);
-};
-
-/**
- * Prese edit button
- */
-var pressEditButton = function() {
-  utils.pressButton(mwp.locators.editButton);
-};
-
-/**
- * Expect New button is present on page
- */
-var expectNewButtonIsPresent = function() {
-  return mwp.locators.newButton.isPresent().then(function(result) {
-    utils.expectResultIsTrue(result);
-  });
-};
-
-module.exports = {
-  create, open, update, remove, search, searchReset,
-  expectWarningsPresent, expectFieldsPresent,
-  expectDetailsToBe, expectElementDetailsEqualTo, expectElementDetailsNotEqualTo,
-  expectToBeInList, expectNotInTheList,
-  pressDeleteButton, pressCancelButton, pressNewButton, pressNewCancelButton,
-  expectNewButtonIsPresent, pressEditButton
-};
+module.exports = WorkorderService;

@@ -31,6 +31,7 @@ var MainWorkerPage = function() {
       return browser.get(consts.HASH + consts.workers.URL);
     },
     sideClick: function() {
+      utils.navigateToSection();
       return locators.sideMenuButton.click();
     },
     selfCheck: function() {
