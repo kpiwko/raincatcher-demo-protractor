@@ -10,10 +10,7 @@ var BaseService = require('../utils/base.so');
 var _ = require('lodash');
 
 function WorkorderService() {
-  pageObject.main.locators.item = pageObject.main.locators.workorder;
-  pageObject.main.locators.items = pageObject.main.locators.workorders;
   pageObject.new.locators.itemForm = pageObject.new.locators.workorderForm;
-
   BaseService.call(this, pageObject);
 }
 
@@ -81,6 +78,16 @@ WorkorderService.prototype.fillInTheFields = function(workorder) {
 };
 
 /**
+ * Clear specific fields on Item Form
+ */
+WorkorderService.prototype.clearOtherFields = function() {
+  nwp.commands.clearStartDate();
+  nwp.commands.clearStartTime();
+  nwp.commands.clearFinishDate();
+  nwp.commands.clearFinishTime();
+};
+
+/**
  * Search workorder in workorders list
  * @param {*} workorder to be searched
  */
@@ -94,7 +101,7 @@ WorkorderService.prototype.searchForItem = function(workorder, count) {
 };
 
 /**
- * Check if all fields of item Form are present
+ * Check if all fields of Workorder Form are present
  */
 WorkorderService.prototype.expectFieldsPresent = function() {
   var isPresent = function(x) {

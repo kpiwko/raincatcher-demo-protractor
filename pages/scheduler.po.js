@@ -18,13 +18,19 @@ var SchedulerPage = function() {
     workOrdersList: element(by.id('workorders-list')),
     workOrderListHeading: element(by.id('workorders-list')).element(by.css('.md-subhead')),
     workOrdersListItems: element(by.id('workorders-list')).all(by.css('schedule-workorder-chip')),
-    workOrdersListHeadingValue: "Workorders"
+    workOrdersListHeadingValue: "Workorders",
+
+    sideMenuButton: element(by.css('md-sidenav>md-list button[aria-label$="Scheduler"]'))
   };
 
   /**
    * Actions that are specific to elements only found on the scheduler page
    */
   var commands = {
+    sideClick: function() {
+      utils.navigateToSection();
+      return locators.sideMenuButton.click();
+    },
     selfCheck: function() {
       return browser.getLocationAbsUrl().then(function(result) {
         utils.expectResultIsEquelTo(result, consts.schedule.URL);

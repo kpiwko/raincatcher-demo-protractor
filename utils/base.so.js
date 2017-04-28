@@ -68,19 +68,6 @@ BaseService.prototype.update = function(toUpdate, updatee) {
  * @param {*} item to be openned
  */
 BaseService.prototype.open = function(item) {
-  // var pageObject = this.pageObject;
-  // return pageObject.main.commands.sideClick().then(function() {
-  //   pageObject.main.commands.selfCheck();
-  // }).then(function() {
-  //   pageObject.main.locators.items.filter(function(wor) {
-  //     return wor.element(pageObject.main.locators.item.title).getText().then(function(text) {
-  //       return text === this.title;
-  //     }.bind({ title: item.title }));
-  //   })
-  //   .then(function(filtered) {
-  //     filtered[0].click();
-  //   });
-  // });
   var promise = this.search(item);
   return promise.then(function(found) {
     found.click();
@@ -145,6 +132,7 @@ BaseService.prototype.searchReset = function() {
  * Clear all Fields of item Form
  */
 BaseService.prototype.clearAllFields = function() {
+  var self = this;
   var clear = function(x) {
     return x.clear();
   };
@@ -155,10 +143,7 @@ BaseService.prototype.clearAllFields = function() {
   }).then(function(results) { // clear fields
     utils.expectEachResultsIsNull(results);
   }).then(function() { // clear date and time
-    pageObject.new.commands.clearStartDate();
-    pageObject.new.commands.clearStartTime();
-    pageObject.new.commands.clearFinishDate();
-    pageObject.new.commands.clearFinishTime();
+    self.clearOtherFields();
   });
 };
 //################################################################################
@@ -212,11 +197,9 @@ BaseService.prototype.expectToBeInList = function(expected) {
  * @param {*} item
  */
 BaseService.prototype.expectNotInTheList = function(expected) {
-  var pageObject = this.pageObject;
-  pageObject.main.commands.search(expected.title).then(function() {
-    pageObject.main.commands.count().then(function(count) {
-      utils.expectResultIsEquelTo(count, 0);
-    });
+  var promise = this.search(expected);
+  promise.then(function(found) {
+    utils.expectResultIsUndefined(found);
   });
 };
 
@@ -299,6 +282,13 @@ BaseService.prototype.selectDropdowns = function(item) {
  */
 BaseService.prototype.fillInTheFields = function(item) {
   _.noop(item);
+  throw new Error('Override this method in super class');
+};
+
+/**
+ * Clear specific fields on Item Form
+ */
+BaseService.prototype.clearOtherFields = function() {
   throw new Error('Override this method in super class');
 };
 

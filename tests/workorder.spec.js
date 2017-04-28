@@ -4,7 +4,9 @@ var scp = require('../pages/scheduler.po');
 var WorkorderService = require('../utils/workorder.so');
 var workorderService = new WorkorderService();
 
-var workersCrudl = require('../utils/worker.crudl');
+var WorkerService = require('../utils/worker.so');
+var workerService = new WorkerService();
+
 var workflowCrudl = require('../utils/workflow.crudl');
 
 var utils = require('../utils/utils');
@@ -24,8 +26,8 @@ describe('Workorder E2E', function() {
 
   describe('SETUP', function() {
     it('create workers', function() {
-      workersCrudl.create(data.workers.WORKER1);
-      workersCrudl.create(data.workers.WORKER2);
+      workerService.create(data.workers.WORKER1);
+      workerService.create(data.workers.WORKER2);
     });
     it('create workflows', function() {
       workflowCrudl.create(data.workflows.WORKFLOW1);
@@ -59,10 +61,10 @@ describe('Workorder E2E', function() {
       workorderService.expectToBeInList(data.workorders.CREATE);
     });
     it('open ' + data.params.WORKER_TCRUDL1 + ' worker', function() {
-      workersCrudl.open(data.workers.WORKER1);
+      workerService.open(data.workers.WORKER1);
     });
     it('check ' + data.params.WORKORDER_TCREATE + ' workorder in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
-      workersCrudl.verifyWorkorderInList(data.params.WORKER_TCRUDL1, data.workorders.CREATE);
+      workerService.verifyWorkorderInList(data.workers.WORKER1, data.workorders.CREATE);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -83,10 +85,10 @@ describe('Workorder E2E', function() {
       workorderService.expectToBeInList(data.workorders.UPDATE2);
     });
     it('open ' + data.params.WORKER_TCRUDL2 + ' worker', function() {
-      workersCrudl.open(data.workers.WORKER2);
+      workerService.open(data.workers.WORKER2);
     });
     it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder in ' + data.params.WORKER_TCRUDL2 + ' worker list', function() {
-      workersCrudl.verifyWorkorderInList(data.params.WORKER_TCRUDL2, data.workorders.UPDATE2);
+      workerService.verifyWorkorderInList(data.workers.WORKER2, data.workorders.UPDATE2);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -152,8 +154,8 @@ describe('Workorder E2E', function() {
     it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
       workorderService.expectNotInTheList(data.workorders.DELETE);
     });
-    it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
-      workersCrudl.expectNotInTheList(data.params.WORKER_TCRUDL1, data.workorders.DELETE);
+    it('check ' + data.params.WORKORDER_TDELETE + ' workorder in ' + data.params.WORKER_TCRUDL1 + ' worker list', function() {
+      workerService.verifyWorkorderNotInList(data.workers.WORKER1, data.workorders.DELETE);
     });
     xit('mobile App workorder in list', function() {
       // TODO
@@ -168,8 +170,8 @@ describe('Workorder E2E', function() {
       workorderService.remove(data.workorders.UPDATE2);
     });
     it('remove workers', function() {
-      workersCrudl.remove(data.workers.WORKER1);
-      workersCrudl.remove(data.workers.WORKER2);
+      workerService.remove(data.workers.WORKER1);
+      workerService.remove(data.workers.WORKER2);
     });
     it('remove workflows', function() {
       workflowCrudl.remove(data.workflows.WORKFLOW1);
