@@ -68,7 +68,7 @@ BaseService.prototype.update = function(toUpdate, updatee) {
  * @param {*} item to be openned
  */
 BaseService.prototype.open = function(item) {
-  var promise = this.search(item);
+  var promise = this.search(item, 1);
   return promise.then(function(found) {
     found.click();
   });
@@ -188,7 +188,7 @@ BaseService.prototype.expectElementDetailsNotEqualTo = function(promise, expecte
  * @param {*} item
  */
 BaseService.prototype.expectToBeInList = function(expected) {
-  var promise = this.search(expected);
+  var promise = this.search(expected, 1);
   this.expectElementDetails(promise, expected, utils.expectResultIsEquelTo);
 };
 
@@ -197,9 +197,11 @@ BaseService.prototype.expectToBeInList = function(expected) {
  * @param {*} item
  */
 BaseService.prototype.expectNotInTheList = function(expected) {
-  var promise = this.search(expected);
+  var promise = this.search(expected, 0);
   promise.then(function(found) {
-    utils.expectResultIsUndefined(found);
+    return found.isPresent();
+  }).then(function(present) {
+    utils.expectResultIsFalse(present);
   });
 };
 

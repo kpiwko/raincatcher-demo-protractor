@@ -1,10 +1,11 @@
 var lop = require('../pages/login.po');
 var scp = require('../pages/scheduler.po');
 
-var cwp = require('../pages/worker/create.po');
+var cwp = require('../pages/worker/new.po');
 var mwp = require('../pages/worker/main.po');
 
-var workersCrudl = require('../utils/worker.crudl');
+var WorkerService = require('../utils/worker.so');
+var workerService = new WorkerService();
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -38,13 +39,14 @@ describe('Login into Portal App', function() {
     scp.commands.selfCheck();
   });
   it('open user settings', function() {
-    workersCrudl.open({ name: 'Daisy Dialer' });
-    expect($(mwp.selectors.editButton).isPresent()).eventually.to.be.true;
+    workerService.open({ name: 'Daisy Dialer' });
+    expect(mwp.locators.editButton.isPresent()).eventually.to.be.true;
   });
   it('change user password', function() {
-    $(mwp.selectors.editButton).click();
+    mwp.locators.editButton.click();
     cwp.commands.changePassword('daisy');
-    $(cwp.selectors.workerForm.updateButton).click();
+    // cwp.locators.updateButton.click(); // BUG should be Update Button
+    cwp.locators.createButton.click();
   });
   it('logout from portal', function() {
     lop.commands.logout();

@@ -1,17 +1,11 @@
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
-
 var lop = require('../pages/login.po');
 var scp = require('../pages/scheduler.po');
 
-var cgp = require('../pages/group/create.po');
-var mgp = require('../pages/group/main.po');
+var GroupService = require('../utils/group.so');
+var groupService = new GroupService();
 
-var groupsCrudl = require('../utils/group.crudl');
-var workerCrudl = require('../utils/worker.crudl');
+var WorkerService = require('../utils/worker.so');
+var workerService = new WorkerService();
 
 var utils = require('../utils/utils');
 var data = require('../data/groups.do');
@@ -30,149 +24,134 @@ describe('Group E2E', function() {
 
   describe('SETUP', function() {
     it('create groups', function() {
-      groupsCrudl.create(data.groups.UPDATE1);
-      groupsCrudl.create(data.groups.DELETE);
-      groupsCrudl.create(data.groups.CANCEL);
-      groupsCrudl.create(data.groups.SEARCH);
-      groupsCrudl.create(data.groups.ADD);
+      groupService.create(data.groups.UPDATE1);
+      groupService.create(data.groups.DELETE);
+      groupService.create(data.groups.CANCEL);
+      groupService.create(data.groups.SEARCH);
+      groupService.create(data.groups.ADD);
     });
   });
 
   describe('CREATE', function() {
 
     it('create an empty{} group', function() {
-      groupsCrudl.create({}, true);
+      groupService.create({}, true);
     });
     it('required field warinigs shown', function() {
-      cgp.commands.warningsAreShown();
+      groupService.expectWarningsPresent();
     });
     it('create new ' + data.params.GROUP_TCREATE + ' group', function() {
-      groupsCrudl.create(data.groups.CREATE);
+      groupService.create(data.groups.CREATE);
     });
-    it('verify ' + data.params.GROUP_TCREATE + ' group details', function() {
-      groupsCrudl.verifyDetails(data.groups.CREATE);
+    xit('RAINCATCH-793: expect ' + data.params.GROUP_TCREATE + ' group details', function() {
+      groupService.expectDetailsToBe(data.groups.CREATE);
     });
-    it('verify ' + data.params.GROUP_TCREATE + ' group in list', function() {
-      groupsCrudl.verifyInList(data.groups.CREATE);
+    it('expect ' + data.params.GROUP_TCREATE + ' group in list', function() {
+      groupService.expectToBeInList(data.groups.CREATE);
     });
   });
 
   describe('UPDATE', function() {
     it('update ' + data.params.GROUP_TUPDATE1 + ' group details', function() {
-      groupsCrudl.update(data.params.GROUP_TUPDATE1, data.groups.UPDATE2);
+      groupService.update(data.groups.UPDATE1, data.groups.UPDATE2);
     });
-    it('verify ' + data.params.GROUP_TUPDATE2 + ' group details', function() {
-      groupsCrudl.verifyDetails(data.groups.UPDATE2);
+    xit('RAINCATCH-793: check ' + data.params.GROUP_TUPDATE2 + ' group details', function() {
+      groupService.expectDetailsToBe(data.groups.UPDATE2);
     });
-    it('verify ' + data.params.GROUP_TUPDATE2 + ' group in list', function() {
-      groupsCrudl.verifyInList(data.groups.UPDATE2);
+    it('check ' + data.params.GROUP_TUPDATE2 + ' group in list', function() {
+      groupService.expectToBeInList(data.groups.UPDATE2);
     });
   });
 
   describe('CANCEL', function() {
     it('open ' + data.params.GROUP_TCANCEL + ' group details', function() {
-      groupsCrudl.open(data.groups.CANCEL);
+      groupService.open(data.groups.CANCEL);
     });
     it('press [delete] button', function() {
-      expect($(mgp.selectors.deleteButton).isPresent()).eventually.to.be.true;
-      $(mgp.selectors.deleteButton).click();
-      expect($(mgp.selectors.cancelButton).isPresent()).eventually.to.be.true;
+      groupService.pressDeleteButton();
     });
     it('press [cancel] button', function() {
-      $(mgp.selectors.cancelButton).click();
-      expect($(mgp.selectors.cancelButton).isPresent()).eventually.to.be.false;
+      groupService.pressCancelButton();
     });
-    it('verify ' + data.params.GROUP_TCANCEL + ' group in list', function() {
-      groupsCrudl.verifyInList(data.groups.CANCEL);
+    it('check ' + data.params.GROUP_TCANCEL + ' group in list', function() {
+      groupService.expectToBeInList(data.groups.CANCEL);
     });
     it('press [new] button', function() {
-      expect($(mgp.selectors.newButton).isPresent()).eventually.to.be.true;
-      $(mgp.selectors.newButton).click();
-      expect($(cgp.selectors.groupForm.cancelButton).isPresent()).eventually.to.be.true;
+      groupService.pressNewButton();
     });
     it('press [cancel] button', function() {
-      $(cgp.selectors.groupForm.cancelButton).click();
-      expect($(cgp.selectors.groupForm.cancelButton).isPresent()).eventually.to.be.false;
+      groupService.pressNewCancelButton();
     });
-    it('verify [new] button visible', function() {
-      expect($(mgp.selectors.newButton).isPresent()).eventually.to.be.true;
+    it('check [new] button visible', function() {
+      groupService.expectNewButtonIsPresent();
     });
     it('open ' + data.params.GROUP_TCANCEL + ' group details', function() {
-      groupsCrudl.open(data.groups.CANCEL);
+      groupService.open(data.groups.CANCEL);
     });
     it('press [edit] button', function() {
-      expect($(mgp.selectors.editButton).isPresent()).eventually.to.be.true;
-      $(mgp.selectors.editButton).click();
-      expect($(cgp.selectors.groupForm.cancelButton).isPresent()).eventually.to.be.true;
+      groupService.pressEditButton();
     });
     it('press [cancel] button', function() {
-      $(cgp.selectors.groupForm.cancelButton).click();
-      expect($(cgp.selectors.groupForm.cancelButton).isPresent()).eventually.to.be.false;
+      groupService.pressNewCancelButton();
     });
-    it('verify ' + data.params.GROUP_TCANCEL + ' group details', function() {
-      groupsCrudl.verifyDetails(data.groups.CANCEL);
+    xit('RAINCATCH-793: check ' + data.params.GROUP_TCANCEL + ' group details', function() {
+      groupService.expectDetailsToBe(data.groups.CANCEL);
     });
   });
 
   describe('SEARCH', function() {
-    it('open groups page', function() {
-      mgp.commands.sideClick();
-      mgp.commands.selfCheck();
+    var searched;
+    it('search field is visible and ' + data.params.GROUP_TSEARCH + 'is searched', function() {
+      searched = groupService.search(data.groups.SEARCH, 1);
     });
-    it('search field is visible', function() {
-      expect($(mgp.selectors.searchField).isPresent()).eventually.to.be.true;
-      $(mgp.selectors.searchField).sendKeys(data.params.GROUP_TSEARCH);
-      browser.sleep(2000); // wait 2 secs to do search
+    it('check ' + data.params.GROUP_TSEARCH + ' group in list', function() {
+      groupService.expectElementDetailsEqualTo(searched, data.groups.SEARCH);
     });
-    it('verify ' + data.params.GROUP_TSEARCH + ' group in list', function() {
-      groupsCrudl.verifyInList(data.groups.SEARCH);
+    it('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
+      groupService.expectElementDetailsNotEqualTo(searched, data.groups.DELETE);
     });
-    it('verify ' + data.params.GROUP_TDELETE + ' group not in list', function() {
-      groupsCrudl.verifyNotInList(data.groups.DELETE);
-    });
-    it('clean search text', function() {
-      $(mgp.selectors.searchField).clear(); // clear search text
-      browser.sleep(2000); // wait 2 secs to do search
+    it('search for all workorders', function() {
+      groupService.searchReset();
     });
   });
 
-  describe.skip('ADD WORKER TO GROUP', function() { //RAINCATCH-700
+  describe('ADD WORKER TO GROUP', function() {
     it('create test worker', function() {
-      workerCrudl.create(data.workers.ADD);
+      workerService.create(data.workers.ADD);
     });
     it('open test group', function() {
-      groupsCrudl.open(data.groups.ADD);
+      groupService.open(data.groups.ADD);
     });
     it('verify test worker is in list of test group', function() {
-      groupsCrudl.verifyWorkerInList(data.workers.ADD);
+      groupService.verifyWorkerInList(data.workers.ADD);
     });
     it('remove test worker', function() {
-      workerCrudl.remove(data.workers.ADD);
+      workerService.remove(data.workers.ADD);
     });
     it('open test group', function() {
-      groupsCrudl.open(data.groups.ADD);
+      groupService.open(data.groups.ADD);
     });
     it('verify test worker is not in list of test group', function() {
-      groupsCrudl.verifyWorkerNotInList(data.workers.ADD);
+      groupService.verifyWorkerNotInList(data.workers.ADD);
     });
   });
 
   describe('DELETE', function() {
     it('remove ' + data.params.GROUP_TDELETE + ' group', function() {
-      groupsCrudl.remove(data.groups.DELETE);
+      groupService.remove(data.groups.DELETE);
     });
-    it('verify ' + data.params.GROUP_TDELETE + ' group not in list', function() {
-      groupsCrudl.verifyNotInList(data.groups.DELETE);
+    it('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
+      groupService.expectNotInTheList(data.groups.DELETE);
     });
   });
 
   describe('CLEANUP', function() {
     it('remove groups', function() {
-      groupsCrudl.remove(data.groups.CREATE);
-      groupsCrudl.remove(data.groups.UPDATE2);
-      groupsCrudl.remove(data.groups.CANCEL);
-      groupsCrudl.remove(data.groups.SEARCH);
-      groupsCrudl.remove(data.groups.ADD);
+      groupService.remove(data.groups.CREATE);
+      groupService.remove(data.groups.UPDATE2);
+      groupService.remove(data.groups.CANCEL);
+      groupService.remove(data.groups.SEARCH);
+      groupService.remove(data.groups.ADD);
     });
   });
 });

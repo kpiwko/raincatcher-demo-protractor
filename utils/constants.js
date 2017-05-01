@@ -27,7 +27,9 @@ module.exports = {
   },
   groups: {
     URL: '/groups',
-    URL_NEW: '/groups/new'
+    URL_NEW: '/groups/new',
+    DEFAULT_HEADING: "No group selected.",
+    DEFAULT_BODY: "Select a group from the menu, or create a new group:"
   },
   workers: {
     URL: '/workers',

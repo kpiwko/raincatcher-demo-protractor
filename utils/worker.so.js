@@ -76,7 +76,6 @@ WorkerService.prototype.clearOtherFields = function() {
  * @param {*} worker to be searched
  */
 WorkerService.prototype.searchForItem = function(worker, count) {
-  count = count || 1;
   return pageObject.main.commands.search(worker.title).then(function() {
     pageObject.main.commands.count().then(function(c) {
       utils.expectResultIsEquelTo(c, count);
@@ -101,6 +100,18 @@ WorkerService.prototype.search = function(worker) {
     .then(function(filtered) {
       return filtered[0];
     });
+  });
+};
+
+/**
+ * Expect item not in items list
+ * @param {*} item
+ * TODO this is FIX without using search input
+ */
+WorkerService.prototype.expectNotInTheList = function(worker) {
+  var promise = this.search(worker);
+  promise.then(function(found) {
+    utils.expectResultIsUndefined(found);
   });
 };
 

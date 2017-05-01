@@ -92,7 +92,6 @@ WorkorderService.prototype.clearOtherFields = function() {
  * @param {*} workorder to be searched
  */
 WorkorderService.prototype.searchForItem = function(workorder, count) {
-  count = count || 1;
   return pageObject.main.commands.search(workorder.title).then(function() {
     pageObject.main.commands.count().then(function(c) {
       utils.expectResultIsEquelTo(c, count);

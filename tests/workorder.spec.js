@@ -127,14 +127,14 @@ describe('Workorder E2E', function() {
       workorderService.pressNewCancelButton();
     });
     it('check ' + data.params.WORKORDER_TCANCEL + ' workorder details', function() {
-      workorderService.expectDetailsToBe(data.workorders.CANCEL); //RAINCATCH-641
+      workorderService.expectDetailsToBe(data.workorders.CANCEL);
     });
   });
 
   describe('SEARCH', function() {
     var searched;
     it('search field is visible and ' + data.params.WORKORDER_TSEARCH + 'is searched', function() {
-      searched = workorderService.search(data.workorders.SEARCH);
+      searched = workorderService.search(data.workorders.SEARCH, 1);
     });
     it('check ' + data.params.WORKORDER_TSEARCH + ' workorder in list', function() {
       workorderService.expectElementDetailsEqualTo(searched, data.workorders.SEARCH);
