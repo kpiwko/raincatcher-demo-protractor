@@ -39,7 +39,9 @@ module.exports = {
   },
   workflows: {
     URL: '/workflows/list',
-    URL_NEW: '/workflows/list/workflows/'
+    URL_NEW: '/workflows/list/workflows/',
+    DEFAULT_HEADING: "No workflow selected.",
+    DEFAULT_BODY: "Select a workflow from the menu, or create a new workflow:"
   },
   workorders: {
     URL: '/workorders/list',

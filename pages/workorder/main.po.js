@@ -14,7 +14,6 @@ var MainWorkorderPage = function() {
     editButton: element(by.css('a[aria-label="Edit"]')),
     cancelButton: element(by.css('button[aria-label="Cancel"]')),
 
-    searchField: element(by.css('input[name="search"]')),
     summaryInfo: element(by.css('workorder>md-list')),
     search : element(by.css('workorder-list>form>input[name="search"]')),
     workorders: element.all(by.repeater('workorder in ctrl.workorders')),
@@ -48,7 +47,7 @@ var MainWorkorderPage = function() {
         return locators.newButton.isPresent();
       }).then(function(result) {
         utils.expectResultIsTrue(result);
-        return locators.searchField.isPresent();
+        return locators.search.isPresent();
       }).then(function(result) {
         utils.expectResultIsTrue(result);
       });

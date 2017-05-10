@@ -1,7 +1,6 @@
-// var cwp = require('../pages/workflow/create.po');
 var mwp = require('../pages/workflow/main.po');
-// var utils = require('../utils/utils');
-var workflowCrudl = require('./workflow.crudl');
+var WorkflowService = require('../utils/workflow.so');
+var workflowService = new WorkflowService();
 
 var chai = require('chai');
 var chaiAsPromised = require('chai-as-promised');
@@ -17,7 +16,7 @@ var addStep = function(params) {
 module.exports.addStep = addStep;
 
 module.exports.addStepToWorkflow = function(workflow, params) {
-  workflowCrudl.open({title: workflow});
+  workflowService.open({title: workflow});
   addStep(params);
 };
 

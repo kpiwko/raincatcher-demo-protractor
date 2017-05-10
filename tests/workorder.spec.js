@@ -7,7 +7,8 @@ var workorderService = new WorkorderService();
 var WorkerService = require('../utils/worker.so');
 var workerService = new WorkerService();
 
-var workflowCrudl = require('../utils/workflow.crudl');
+var WorkflowService = require('../utils/workflow.so');
+var workflowService = new WorkflowService();
 
 var utils = require('../utils/utils');
 var data = require('../data/workorders.do');
@@ -30,8 +31,8 @@ describe('Workorder E2E', function() {
       workerService.create(data.workers.WORKER2);
     });
     it('create workflows', function() {
-      workflowCrudl.create(data.workflows.WORKFLOW1);
-      workflowCrudl.create(data.workflows.WORKFLOW2);
+      workflowService.create(data.workflows.WORKFLOW1);
+      workflowService.create(data.workflows.WORKFLOW2);
     });
     it('create workorders', function() {
       workorderService.create(data.workorders.UPDATE1);
@@ -83,6 +84,9 @@ describe('Workorder E2E', function() {
     });
     it('check ' + data.params.WORKORDER_TUPDATE2 + ' workorder in list', function() {
       workorderService.expectToBeInList(data.workorders.UPDATE2);
+    });
+    it('check ' + data.params.WORKORDER_TUPDATE1 + ' workorder not in list', function() {
+      workorderService.expectNotInTheList(data.workorders.UPDATE1);
     });
     it('open ' + data.params.WORKER_TCRUDL2 + ' worker', function() {
       workerService.open(data.workers.WORKER2);
@@ -142,7 +146,7 @@ describe('Workorder E2E', function() {
     it('check ' + data.params.WORKORDER_TDELETE + ' workorder not in list', function() {
       workorderService.expectElementDetailsNotEqualTo(searched, data.workorders.DELETE);
     });
-    it('search for all workorders', function() {
+    it('search reset to list all workorders', function() {
       workorderService.searchReset();
     });
   });
@@ -174,8 +178,8 @@ describe('Workorder E2E', function() {
       workerService.remove(data.workers.WORKER2);
     });
     it('remove workflows', function() {
-      workflowCrudl.remove(data.workflows.WORKFLOW1);
-      workflowCrudl.remove(data.workflows.WORKFLOW2);
+      workflowService.remove(data.workflows.WORKFLOW1);
+      workflowService.remove(data.workflows.WORKFLOW2);
     });
   });
 });

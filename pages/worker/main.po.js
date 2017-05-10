@@ -15,7 +15,6 @@ var MainWorkerPage = function() {
     editButton: element(by.css('a[aria-label="Edit"]')),
     cancelButton: element(by.css('button[aria-label="Cancel"]')),
 
-    searchField: element(by.css('input[name="search"]')),
     search : element(by.css('worker-list>form>input[name="search"]')),
     workers: element.all(by.repeater('user in ctrl.workers')),
     worker: {
@@ -49,7 +48,7 @@ var MainWorkerPage = function() {
         return locators.newButton.isPresent();
       }).then(function(result) {
         utils.expectResultIsTrue(result);
-        return locators.searchField.isPresent();
+        return locators.search.isPresent();
       }).then(function(result) {
         utils.expectResultIsTrue(result);
       });

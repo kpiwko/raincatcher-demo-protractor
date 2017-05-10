@@ -10,7 +10,9 @@ var scp = require('../pages/scheduler.po');
 // var cwp = require('../pages/workflow/create.po');
 var mwp = require('../pages/workflow/main.po');
 
-var workflowsCrudl = require('../utils/workflow.crudl');
+var WorkflowService = require('../utils/workflow.so');
+var workflowService = new WorkflowService();
+
 var stepsCrudl = require('../utils/steps.crudl');
 
 var utils = require('../utils/utils');
@@ -30,7 +32,7 @@ describe('Workflow E2E', function() {
 
   describe('SETUP', function() {
     it('create ' + data.params.STEP_TCREATE + ' workflow', function() {
-      workflowsCrudl.create(data.workflows.WORKFLOW);
+      workflowService.create(data.workflows.WORKFLOW);
     });
     it('create steps', function() {
       stepsCrudl.addStepToWorkflow(data.workflows.WORKFLOW.title, data.steps.UPDATE1);
@@ -41,7 +43,7 @@ describe('Workflow E2E', function() {
 
   describe('CREATE', function() {
     it('open ' + data.params.WORKFLOW_TCRUDL + ' workflow', function() {
-      workflowsCrudl.open(data.workflows.WORKFLOW);
+      workflowService.open(data.workflows.WORKFLOW);
     });
     it('check [Add Step] button is visible', function() {
       expect($(mwp.selectors.stepForm.addStepButton).isPresent()).eventually.to.be.true; //RAINCATCH-705
@@ -64,7 +66,7 @@ describe('Workflow E2E', function() {
 
   describe('UPDATE', function() {
     it('open ' + data.params.WORKFLOW_TCRUDL + ' workflow', function() {
-      workflowsCrudl.open(data.workflows.WORKFLOW);
+      workflowService.open(data.workflows.WORKFLOW);
     });
     it('update ' + data.params.STEP_TUPDATE1 + ' step details', function() {
       stepsCrudl.update(data.steps.UPDATE1.name, data.steps.UPDATE2);
@@ -79,7 +81,7 @@ describe('Workflow E2E', function() {
 
   describe('CANCEL', function() {
     it('open ' + data.params.WORKFLOW_TCRUDL + ' workflow', function() {
-      workflowsCrudl.open(data.workflows.WORKFLOW);
+      workflowService.open(data.workflows.WORKFLOW);
     });
     it('press [delete] button on ' + data.params.STEP_TCANCEL + ' step', function() {
       expect(
@@ -113,7 +115,7 @@ describe('Workflow E2E', function() {
 
   describe('DELETE', function() {
     it('open ' + data.params.WORKFLOW_TCRUDL + ' workflow', function() {
-      workflowsCrudl.open(data.workflows.WORKFLOW);
+      workflowService.open(data.workflows.WORKFLOW);
     });
     it('remove ' + data.params.STEP_TDELETE + ' step', function() {
       stepsCrudl.remove(data.steps.DELETE);
@@ -130,7 +132,7 @@ describe('Workflow E2E', function() {
       stepsCrudl.remove(data.steps.CANCEL);
     });
     it('remove workflows', function() {
-      workflowsCrudl.remove(data.workflows.WORKFLOW);
+      workflowService.remove(data.workflows.WORKFLOW);
     });
   });
 });

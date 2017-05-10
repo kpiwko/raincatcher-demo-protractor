@@ -77,6 +77,9 @@ describe('Worker E2E', function() {
     it('check ' + data.params.WORKER_TUPDATE2 + ' worker in list', function() {
       workerService.expectToBeInList(data.workers.UPDATE2);
     });
+    it('check ' + data.params.WORKER_TUPDATE1 + ' worker not in list', function() {
+      workerService.expectNotInTheList(data.workers.UPDATE1);
+    });
     xit('mobile App login with new worker', function() {
       // TODO
     });
@@ -130,7 +133,7 @@ describe('Worker E2E', function() {
     it('check ' + data.params.WORKER_TDELETE + ' worker not in list', function() {
       workerService.expectElementDetailsNotEqualTo(searched, data.workers.DELETE);
     });
-    it('search for all workers', function() {
+    it('search reset to list all workers', function() {
       workerService.searchReset();
     });
   });

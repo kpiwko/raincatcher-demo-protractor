@@ -55,7 +55,7 @@ GroupService.prototype.fillInTheFields = function(group) {
  */
 GroupService.prototype.clearOtherFields = _.noop;
 /**
- * Search workorder in groups list
+ * Search group in groups list
  * @param {*} group to be searched
  */
 GroupService.prototype.searchForItem = function(group, count) {
@@ -67,7 +67,7 @@ GroupService.prototype.searchForItem = function(group, count) {
 };
 
 /**
- * Check if all fields of Workorder Form are present
+ * Check if all fields of Group Form are present
  */
 GroupService.prototype.expectFieldsPresent = function() {
   var isPresent = function(x) {

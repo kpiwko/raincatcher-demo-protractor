@@ -61,6 +61,9 @@ describe('Group E2E', function() {
     it('check ' + data.params.GROUP_TUPDATE2 + ' group in list', function() {
       groupService.expectToBeInList(data.groups.UPDATE2);
     });
+    it('check ' + data.params.GROUP_TUPDATE1 + ' group not in list', function() {
+      groupService.expectNotInTheList(data.groups.UPDATE1);
+    });
   });
 
   describe('CANCEL', function() {
@@ -110,7 +113,7 @@ describe('Group E2E', function() {
     it('check ' + data.params.GROUP_TDELETE + ' group not in list', function() {
       groupService.expectElementDetailsNotEqualTo(searched, data.groups.DELETE);
     });
-    it('search for all workorders', function() {
+    it('search reset to list all groups', function() {
       groupService.searchReset();
     });
   });

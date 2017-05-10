@@ -1,76 +1,81 @@
 var consts = require('../../utils/constants');
 var utils = require('../../utils/utils');
-var chai = require('chai');
-var chaiAsPromised = require('chai-as-promised');
-chai.use(chaiAsPromised);
-
-var expect = chai.expect;
 
 var MainWorkflowPage = function() {
-  var selectors = {
-    header: '//h3/span[text()="Workflows"]',
-    deleteButton: 'button[aria-label="Delete"]',
-    proceedButton: 'button[aria-label="Proceed"]',
-    editButton: 'a[aria-label="Edit"]',
-    cancelButton: 'button[aria-label="Cancel"]',
-    closeButton: 'div.md-toolbar-tools button[aria-label="Close"]',
-    addButton: 'a[aria-label="Add Workflow"]',
-    newButton: 'a[aria-label="New Workflow"]',
-    searchField: '#search',
-    sideMenuButton: 'md-sidenav>md-list button[aria-label$="Workflows"]',
+  var locators = {
+    header: element(by.xpath('//h3/span[text()="Workflows"]')),
 
-    stepForm: {
-      self: 'form[name="workflowStepForm"]',
-      codeField: '#code',
-      nameField: '#name',
-      formIdField: '#formId',
-      formField: '#form',
-      viewField: '#view',
-      addStepButton: 'button[aria-label="Add step"]',
-      updateStepButton: 'button[aria-label="Update step"]',
+    emptyTitle: element(by.css('h2.md-title')),
+    emptyBody: element(by.css('div p.md-body-1')),
 
-      invalidCodeField: '#code[aria-invalid="true"]',
-      invalidNameField: '#name[aria-invalid="true"]'
-    }
+    newButton: element(by.css('a[aria-label="New Workflow"]')),
+    deleteButton: element(by.css('button[aria-label="Delete"]')),
+    proceedButton: element(by.css('button[aria-label="Proceed"]')),
+    editButton: element(by.css('a[aria-label="Edit"]')),
+    cancelButton: element(by.css('button[aria-label="Cancel"]')),
+
+    // search : element(by.css('workflow-list>form>input[name="search"]')), // missing input name
+    search : element(by.css('workflow-list>form>input#search')),
+    workflows: element.all(by.repeater('workflow in ctrl.workflows')),
+    workflow: {
+      title: by.css('div>div>p')
+    },
+
+    sideMenuButton: element(by.css('md-sidenav>md-list button[aria-label$="Workflows"]')),
   };
+
   var commands = {
     navigate: function() {
       return browser.get(consts.HASH + consts.workflows.URL);
     },
     sideClick: function() {
       utils.navigateToSection();
-      $(selectors.sideMenuButton).click();
+      return locators.sideMenuButton.click();
     },
     selfCheck: function() {
-      expect(browser.getLocationAbsUrl()).eventually.to.equal(consts.workflows.URL);
-      expect(element(by.xpath(selectors.header)).isPresent()).eventually.to.be.true;
-      expect($(selectors.newButton).isPresent()).eventually.to.be.true;
-      expect($(selectors.searchField).isPresent()).eventually.to.be.true;
+      return browser.getLocationAbsUrl().then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workflows.URL);
+        return locators.header.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.emptyTitle.getText();
+      }).then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workflows.DEFAULT_HEADING);
+        return locators.emptyBody.getText();
+      }).then(function(result) {
+        utils.expectResultIsEquelTo(result, consts.workflows.DEFAULT_BODY);
+        return locators.newButton.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+        return locators.search.isPresent();
+      }).then(function(result) {
+        utils.expectResultIsTrue(result);
+      });
     },
-    fillInTheStepFields: function(params) {
-      expect($(selectors.stepForm.self).isPresent()).eventually.to.be.true;
-      $(selectors.stepForm.codeField).sendKeys(params.code);
-      $(selectors.stepForm.nameField).sendKeys(params.name);
-      // $(selectors.stepForm.formIdField).sendKeys(params.formId);
-      $(selectors.stepForm.formField).sendKeys(params.form);
-      $(selectors.stepForm.viewField).sendKeys(params.view);
+    search: function(text) {
+      return locators.search.clear().then(function() {
+        locators.search.sendKeys(text);
+      });
     },
-    clearStepValues: function() {
-      expect($(selectors.stepForm.self).isPresent()).eventually.to.be.true;
-      $(selectors.stepForm.codeField).clear();
-      $(selectors.stepForm.nameField).clear();
-      // $(selectors.stepForm.formIdField).clear();
-      $(selectors.stepForm.formField).clear();
-      $(selectors.stepForm.viewField).clear();
+    count: function() {
+      return locators.workflows.count();
     },
-    stepWarningsAreShown: function() {
-      expect($(selectors.stepForm.invalidCodeField).isPresent()).eventually.to.be.true;
-      expect($(selectors.stepForm.invalidNameField).isPresent()).eventually.to.be.true;
+    firstInTheList: function() {
+      return locators.workflows.first();
+    },
+    lastInTheList: function() {
+      return locators.workflows.last();
+    },
+    firstClick: function() {
+      return locators.workflows.first().click();
+    },
+    getTitle: function(elem) {
+      return elem.element(locators.workflow.title).getText();
     }
   };
 
   return {
-    selectors, commands
+    locators, commands
   };
 };
 
