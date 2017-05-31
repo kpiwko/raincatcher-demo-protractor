@@ -1,6 +1,8 @@
 module.exports = {
   auth: {
     DEFAULT_PASSWORD: '123',
+    INVALID_PASSWORD: 'xxx',
+    NEW_PASSWORD: '12345',
     usernames: {
       TREVER_SMITH: 'trever',
       DAISY_DIALER: 'daisy',
@@ -9,14 +11,27 @@ module.exports = {
       JOHNNY_FIZAL: 'johnny',
       BILLY_BALLER: 'billy',
       SALLY_SHORER: 'sally',
-      DANNY_DOORMAN: 'danny'
+      DANNY_DOORMAN: 'danny',
+      INVALID_USER: 'invalid'
+    },
+    userFullName: {
+      TREVER: 'Trever Smith',
+      DAISY: 'Daisy Dialer'
     }
   },
   HASH: '#',
   login: {
     URL: '/login',
-    AUTH_FAIL_MSG: 'Authentication Failed! Try Again.',
-    VALUE_ATTRIBUTE: 'value'
+    DEFAULT_HEADING: 'FeedHenry WFM Demo',
+    DEFAULT_BODY: 'Trouble logging in? Contact the switchboard.',
+    AUTH_FAIL_MSG: 'Authentication Failed! Try Again. (Error: User not found with supplied credentials)',
+    VALUE_ATTRIBUTE: 'value',
+    USERNAME_MISSING_MSG: 'A username is required.',
+    PASSWORD_MISSING_MSG: 'A password is required.'
+  },
+  logout: {
+    URL: '/login',
+    DEFAULT_BODY: 'Trouble logging in? Contact the switchboard.'
   },
   schedule: {
     URL: '/schedule',

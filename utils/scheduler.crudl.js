@@ -1,9 +1,10 @@
 var schedulerPage = require('../pages/scheduler.po');
 var navigationTab = require('../pages/navigation.po');
-var logOutPO = require('../pages/logout.po');
 var utils = require('./utils');
 var dateUtil = require('./date.utils');
 var constants = require('./constants');
+var AuthService = require('../utils/auth.so');
+var authService = new AuthService();
 
 /**
  * Used to open the Scheduler section of the portal and check if we can see if
@@ -162,6 +163,5 @@ module.exports.changeDatepicker = function(date, dateFormat) {
  * Navigate away from schedulerPage page. Destination is logout page
  */
 module.exports.navigateAway = function() {
-  navigationTab.navigateTo.logoutPage();
-  utils.waitUntilPresent(logOutPO.locators.logOutButton);
+  authService.navigateToPortalLogoutPage();
 };

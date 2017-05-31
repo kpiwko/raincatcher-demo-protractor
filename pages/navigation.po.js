@@ -23,20 +23,14 @@ var NavigationTab = function() {
     mapPage: function() {
       utils.navigateToSection(locators.navListItems.get(4));
     },
-    messagesPage: function() {
+    filesPage: function() {
       utils.navigateToSection(locators.navListItems.get(5));
     },
-    filesPage: function() {
+    workflowsPage: function() {
       utils.navigateToSection(locators.navListItems.get(6));
     },
-    workflowsPage: function() {
-      utils.navigateToSection(locators.navListItems.get(7));
-    },
-    formsPage: function() {
+    settingsPage: function() {
       utils.navigateToSection(locators.navListItems.get(8));
-    },
-    analyticsPage: function() {
-      utils.navigateToSection(locators.navListItems.get(9));
     },
     logoutPage: function() {
       utils.navigateToSection(locators.navListItems.last());
@@ -49,4 +43,4 @@ var NavigationTab = function() {
 };
 
 
-module.exports = new NavigationTab();
+module.exports = NavigationTab();

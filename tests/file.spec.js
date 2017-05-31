@@ -3,24 +3,25 @@ var chaiAsPromised = require('chai-as-promised');
 chai.use(chaiAsPromised);
 var expect = chai.expect;
 
-var loginPage = require('../pages/login.po');
 var filePage = require('../pages/file/file.po');
 var utils = require('../utils/utils');
 var fileCrudl = require('../utils/file.crudl');
 
+var constants = require('../utils/constants');
+var AuthService = require('../utils/auth.so');
+var authService = new AuthService();
+
 describe('Files E2E', function() {
   before('login to the portal app', function() {
-    var progress = 'md-progress-circular';
-
-    loginPage.commands.navigate();
-    utils.waitNotPresent(progress);
-    loginPage.commands.login("trever", "123");
-    utils.waitNotPresent(loginPage.selectors.logoutButton);
-    utils.navigateToSection(filePage.locators.filesMenuButton);
+    authService.openPortal();
+    authService.loginPortal(constants.auth.usernames.TREVER_SMITH,
+      constants.auth.DEFAULT_PASSWORD);
+    authService.checkPortalLoginWasSuccessful();
   });
 
   describe('FILES NAVIGATION', function() {
     it('should be able to navigate to the files section', function() {
+      utils.navigateToSection(filePage.locators.filesMenuButton);
       expect(filePage.locators.header.isPresent()).eventually.to.be.true;
       expect(filePage.locators.header.getText()).eventually.to.equal('Files');
       expect(filePage.locators.emptyContent.isPresent()).eventually.to.be.true;
@@ -52,7 +53,7 @@ describe('Files E2E', function() {
 
     it('should display a list of files available', function() {
       fileCrudl.create();
-      utils.navigateToSection($(loginPage.selectors.logoutSideButton));
+      authService.navigateToPortalLogoutPage();
       utils.navigateToSection(filePage.locators.filesMenuButton);
       var fileListLength = fileListContainer.all(by.xpath("./*")).count();
       expect(fileListLength).eventually.to.be.above(0);

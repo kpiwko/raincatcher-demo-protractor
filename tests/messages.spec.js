@@ -1,11 +1,16 @@
 var data = require('../data/messages.do');
 var messagesCrudl = require('../utils/messages.crudl');
-var loginUtil = require('../utils/login.util');
 var newMessagePage = require('../pages/messages/newMessagePage.po');
+var constants = require('../utils/constants');
+var AuthService = require('../utils/auth.so');
+var authService = new AuthService();
 
 describe('testing messages functionality in demo app', function() {
   before('navigate to login page', function() {
-    loginUtil.loginPortal("trever", "123");
+    authService.openPortal();
+    authService.loginPortal(constants.auth.usernames.TREVER_SMITH,
+      constants.auth.DEFAULT_PASSWORD);
+    authService.checkPortalLoginWasSuccessful();
   });
 
   it('check we can see the messages section elements', function() {

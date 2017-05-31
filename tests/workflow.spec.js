@@ -1,22 +1,19 @@
-var lop = require('../pages/login.po');
-var scp = require('../pages/scheduler.po');
-
 var WorkflowService = require('../utils/workflow.so');
 var workflowService = new WorkflowService();
 
-var utils = require('../utils/utils');
 var data = require('../data/workflows.do');
+
+var constants = require('../utils/constants');
+var AuthService = require('../utils/auth.so');
+var authService = new AuthService();
 
 describe('Workflow E2E', function() {
 
   before('login', function() {
-    lop.commands.navigate();
-    var progress = 'md-progress-circular';
-    utils.waitNotPresent(progress);
-    lop.commands.selfCheck();
-    lop.commands.login('trever', '123');
-    utils.waitNotPresent(lop.selectors.logoutButton);
-    scp.commands.selfCheck();
+    authService.openPortal();
+    authService.loginPortal(constants.auth.usernames.TREVER_SMITH,
+      constants.auth.DEFAULT_PASSWORD);
+    authService.checkPortalLoginWasSuccessful();
   });
 
   describe('SETUP', function() {

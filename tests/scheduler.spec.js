@@ -1,8 +1,9 @@
 var schedulerCrudl = require('../utils/scheduler.crudl');
-var authUtils = require('../utils/auth.utils');
 var dateUtil = require('../utils/date.utils');
 var data = require('../data/scheduler.do');
 var constants = require('../utils/constants');
+var AuthService = require('../utils/auth.so');
+var authService = new AuthService();
 
 describe('testing scheduler functionality in demo app', function() {
   var currentDate = new Date();
@@ -10,12 +11,15 @@ describe('testing scheduler functionality in demo app', function() {
   var dateFormat = constants.dateFormat.LITTLE_ENDIAN; // Change this line to required date format
 
   before('login to the portal app', function() {
-    authUtils.loginPortal(constants.auth.usernames.TREVER_SMITH,
+    authService.openPortal();
+    authService.loginPortal(constants.auth.usernames.TREVER_SMITH,
       constants.auth.DEFAULT_PASSWORD);
+    authService.checkPortalLoginWasSuccessful();
   });
 
   after('logout of portal app', function() {
-    authUtils.logoutPortal();
+    authService.navigateToPortalLogoutPage();
+    authService.logoutOfPortal();
   });
 
   describe('Test Datepicker Interactions', function() {
